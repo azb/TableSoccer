@@ -15,7 +15,7 @@ TagManager:
   - PlacementObject
   - Placeable Surface
   - Spawner Contact
-  - 
+  - OutOfBounds
   - 
   - 
   - 
