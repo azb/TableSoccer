@@ -28,11 +28,11 @@ public class PlayerControls : MonoBehaviour
         // Check for joystick movement on the right controller
         Vector2 rightJoystick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
 
-        moveX = leftJoystick.x;
-        moveY = leftJoystick.y;
+        moveX += leftJoystick.x;
+        moveY += leftJoystick.y;
 
-        lookX = rightJoystick.x;
-        lookY = rightJoystick.y;
+        lookX += rightJoystick.x;
+        lookY += rightJoystick.y;
 #endif
 
         //Debug.Log("Look Vector: ["+lookX+","+lookY+"]");
@@ -50,6 +50,7 @@ public class PlayerControls : MonoBehaviour
             if (Mathf.Abs(lookX) + Mathf.Abs(lookY) <= .2f)
             {
                 float direction = -Mathf.Atan2(moveY, moveX) * Mathf.Rad2Deg + 90f;
+
                 transform.rotation = Quaternion.Euler(0, direction, 0);
             }
             //Debug.Log("Move Vector: ["+moveX+","+moveY+"]");
@@ -60,6 +61,11 @@ public class PlayerControls : MonoBehaviour
         {
             AimArrow.SetActive(true);
             float direction = -Mathf.Atan2(lookY, lookX) * Mathf.Rad2Deg + 180f;
+
+#if UNITY_ANDROID && !UNITY_EDITOR //Meta Quest Controls
+            direction -= 90f;
+#endif
+
             transform.rotation = Quaternion.Euler(0, direction, 0);
         }
         else
