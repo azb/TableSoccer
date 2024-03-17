@@ -1,3 +1,4 @@
+#if UNITY_VISIONOS
 using System.Collections;
 using System.Collections.Generic;
 using Unity.PolySpatial.InputDevices;
@@ -26,3 +27,4 @@ public class SpatialTapSelectFilter : MonoBehaviour, IXRSelectFilter
 
     public bool canProcess => isActiveAndEnabled;
 }
+#endif

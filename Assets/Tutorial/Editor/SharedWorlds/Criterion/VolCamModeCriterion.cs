@@ -1,3 +1,4 @@
+#if UNITY_VISIONOS
 using Unity.Tutorials.Core.Editor;
 using UnityEditor;
 using UnityEngine;
@@ -41,3 +42,4 @@ namespace Unity.PolySpatial.Tutorial
         }
     }
 }
+#endif

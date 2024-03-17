@@ -1,3 +1,4 @@
+#if UNITY_VISIONOS
 using Unity.PolySpatial.InputDevices;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -49,3 +50,4 @@ namespace PolySpatial.Template
         }
     }
 }
+#endif

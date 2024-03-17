@@ -1,3 +1,4 @@
+#if UNITY_VISIONOS
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
@@ -112,3 +113,4 @@ namespace PolySpatial.Template
         }
     }
 }
+#endif
