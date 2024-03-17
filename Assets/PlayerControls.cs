@@ -1,15 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
 {
     public float MoveSpeed = .1f;
 
+    public GameObject AimArrow;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -18,17 +18,41 @@ public class PlayerControls : MonoBehaviour
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
 
-        transform.position += new Vector3(
-            moveX,
-            0,
-            moveY
-            )
-            * Time.deltaTime * MoveSpeed;
+        float lookX = Input.GetAxis("Horizontal2");
+        float lookY = Input.GetAxis("Vertical2");
 
-        float direction = -Mathf.Atan2(moveY, moveX) * Mathf.Rad2Deg + 90f;
+        //Debug.Log("Look Vector: ["+lookX+","+lookY+"]");
 
-        transform.rotation = Quaternion.Euler(0, direction, 0);
+        if (Mathf.Abs(moveX) + Mathf.Abs(moveY) > .2f)
+        {
 
-        Debug.Log("Move Vector: ["+moveX+","+moveY+"]");
+            transform.position += new Vector3(
+                moveX,
+                0,
+                moveY
+                )
+                * Time.deltaTime * MoveSpeed;
+
+            if (Mathf.Abs(lookX) + Mathf.Abs(lookY) <= .2f)
+            {
+                float direction = -Mathf.Atan2(moveY, moveX) * Mathf.Rad2Deg + 90f;
+                transform.rotation = Quaternion.Euler(0, direction, 0);
+            }
+            //Debug.Log("Move Vector: ["+moveX+","+moveY+"]");
+
+        }
+
+        if (Mathf.Abs(lookX) + Mathf.Abs(lookY) > .2f)
+        {
+            AimArrow.SetActive(true);
+            float direction = -Mathf.Atan2(lookY, lookX) * Mathf.Rad2Deg + 180f;
+            transform.rotation = Quaternion.Euler(0, direction, 0);
+        }
+        else
+        {
+            AimArrow.SetActive(false);
+        }
+
+
     }
 }
