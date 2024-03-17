@@ -46,4 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpectatorCameraRig2D: {fileID: 223827416953134267, guid: b4edc1f9418dc49919a2620685fd99ef, type: 3}
   AppleVisionProCameraRig: {fileID: 1641988340395268192, guid: 52b6491959ce1406cb0b9d323188bfd9, type: 3}
-  MetaQuestCameraRig: {fileID: 0}
+  MetaQuestCameraRig: {fileID: 3165026207003200542, guid: 379bbf844c4061249b3013e5191a08df, type: 3}

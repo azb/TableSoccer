@@ -13,10 +13,10 @@ public class CameraRigSpawner : MonoBehaviour
     {
 #if UNITY_VISIONOS
         Instantiate(AppleVisionProCameraRig);
+#elif UNITY_EDITOR
+        Instantiate(SpectatorCameraRig2D);
 #elif UNITY_ANDROID
         Instantiate(MetaQuestCameraRig);
-#else
-        Instantiate(SpectatorCameraRig2D);
 #endif
     }
 }
