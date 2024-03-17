@@ -17,7 +17,27 @@ public class SoccerBall : MonoBehaviour
         if (PossessingPlayer)
         {
             transform.position = PossessingPlayer.position + PossessingPlayer.forward * .01f + Vector3.up * .01f;
-            if (Input.GetAxis("Fire1") > .1f)
+
+            bool KickButtonPressed = (Input.GetAxis("Fire1") > .1f);
+
+
+#if UNITY_ANDROID //Meta Quest Controls
+            // Check if the trigger button on the left controller is pressed
+            if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
+            {
+                //Debug.Log("Left trigger pressed");
+                KickButtonPressed = true;
+            }
+
+            // Check if the trigger button on the right controller is pressed
+            if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+            {
+                //Debug.Log("Right trigger pressed");
+                KickButtonPressed = true;
+            }
+#endif
+
+            if (KickButtonPressed)
             {
                 Debug.Log("Fire button pressed");
                 //Kick the ball
