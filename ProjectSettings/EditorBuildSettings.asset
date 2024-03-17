@@ -15,6 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/TableSoccer.unity
     guid: a9b23a31f81bd419fa0849c7985189e5
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 3101533b104634745aff8ef409561d99, type: 2}
     UnityEditor.XR.VisionOS.VisionOSSettings: {fileID: 11400000, guid: 25e1f68848051c946b9048e8426e646c, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: bb65518a4a80049acbc5e85e70dbbee0, type: 2}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: d1b44b12dbc12554c862e577406554bd, type: 2}
