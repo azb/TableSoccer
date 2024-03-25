@@ -1,0 +1,13 @@
+Instructions to switch platform between Meta Quest 3 and Apple Vision Pro:
+
+To switch to Vision OS:
+Step 0: Close the Unity project
+Step 1: Delete the Packages/manifest.json file
+Step 2: Duplicate the Packages/manifest_visionos.json file, and rename the new file to "manifest.json"
+Step 3: Re-open the Unity project
+
+To switch to Meta Quest:
+Step 0: Close the Unity project
+Step 1: Delete the Packages/manifest.json file
+Step 2: Duplicate the Packages/manifest_metaquest.json file, and rename the new file to "manifest.json"
+Step 3: Re-open the Unity project
