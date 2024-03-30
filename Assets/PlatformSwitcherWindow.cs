@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEngine;
 using UnityEditor;
 using System.IO;
@@ -51,8 +53,14 @@ public class PlatformSwitcherWindow : EditorWindow
 
     private void SwitchPlatform(string manifestFileName)
     {
-        string sourcePath = Path.Combine(Application.dataPath, "Packages", manifestFileName);
-        string destinationPath = Path.Combine(Application.dataPath, "Packages", "manifest.json");
+        string parentDirectory = Directory.GetParent(Application.dataPath).FullName;
+        string sourcePath = Path.Combine(parentDirectory, "Packages", manifestFileName);
+        string destinationPath = Path.Combine(parentDirectory, "Packages", "manifest.json");
+
+        //Copy manifestFileName file to manifest.json
+
+        Debug.Log($"sourcePath = {sourcePath}");
+        Debug.Log($"destinationPath = {destinationPath}");
 
         Debug.Log($"Copying {manifestFileName} to manifest.json...");
 
@@ -71,3 +79,5 @@ public class PlatformSwitcherWindow : EditorWindow
         Debug.Log("Platform switched successfully.");
     }
 }
+
+#endif
