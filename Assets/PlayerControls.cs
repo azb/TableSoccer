@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -6,15 +7,19 @@ public class PlayerControls : MonoBehaviour
 
     public GameObject AimArrow;
 
+    PhotonView photonView;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        photonView = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!photonView.IsMine)
+            return;
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
 
@@ -72,7 +77,5 @@ public class PlayerControls : MonoBehaviour
         {
             AimArrow.SetActive(false);
         }
-
-
     }
 }
