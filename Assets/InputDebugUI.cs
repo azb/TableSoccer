@@ -36,11 +36,13 @@ public class InputDebugUI : MonoBehaviour
             debugText.text += "JoystickAxis" + i + " value: " + axisValue + "\n";
         }
 
-        for (int i = 0; i < 12; i++) // Assuming maximum 20 buttons per joystick
+        for (int i = 0; i < 20; i++) // Assuming maximum 20 buttons per joystick
         {
+
             // Check if the current button is pressed
             if (Input.GetButton("joystick 1 button "+i))
             {
+                debugText.text += "Joystick button " + (i) + " is pressed!";
                 Debug.Log("Joystick button " + (i) + " is pressed!");
             }
         }
