@@ -3,6 +3,9 @@ using Photon.Pun;
 
 public class PlayerControls : MonoBehaviour
 {
+	public GameObject kickModel:
+	public GameObject runModel:
+	public GameObject standModel:
     public float MoveSpeed = .1f;
 
     public GameObject AimArrow;
