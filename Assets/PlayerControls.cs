@@ -3,9 +3,11 @@ using Photon.Pun;
 
 public class PlayerControls : MonoBehaviour
 {
-	public GameObject kickModel:
-	public GameObject runModel:
-	public GameObject standModel:
+    public GameObject kickModel;
+    public GameObject runModel1;
+    public GameObject runModel2;
+    public GameObject standModel;
+
     public float MoveSpeed = .1f;
 
     public GameObject AimArrow;
@@ -39,12 +41,10 @@ public class PlayerControls : MonoBehaviour
     public string LookXAxisEditor = "JoystickAxis3";
     public string LookYAxisEditor = "JoystickAxis4";
     public string KickAxisEditor = "JoystickAxis5";
+    public bool InvertMoveXEditor = false;
+    public bool InvertMoveYEditor = false;
     public bool InvertLookXEditor = false;
     public bool InvertLookYEditor = false;
-
-
-
-
 
     public string KickButton = "joystick 1 button 1";
 
@@ -52,13 +52,57 @@ public class PlayerControls : MonoBehaviour
     void Start()
     {
         photonView = GetComponent<PhotonView>();
+        Invoke("SwitchSide",.2f);
     }
+
+    int side = 1;
+
+    void SwitchSide()
+    {
+        if (side == 1)
+        {
+            side = 2;
+        }
+        else
+        {
+            side = 1;
+        }
+
+        Invoke("SwitchSide", .2f);
+    }
+
+
+    bool kicking;
+
+
+    void DoneKicking()
+    {
+        kicking = false;
+        runModel1.SetActive(false);
+        runModel2.SetActive(false);
+        standModel.SetActive(true);
+        kickModel.SetActive(false);
+    }
+
+    bool running;
 
     // Update is called once per frame
     void Update()
     {
         if (!photonView.IsMine)
             return;
+
+        bool KickButtonPressed = Input.GetButton("joystick 1 button 1");
+
+        if (KickButtonPressed)
+        {
+            kicking = true;
+            runModel1.SetActive(false);
+            runModel2.SetActive(false);
+            standModel.SetActive(false);
+            kickModel.SetActive(true);
+            Invoke("DoneKicking",.2f);
+        }
 
         float moveX;
         float moveY;
@@ -172,6 +216,7 @@ public class PlayerControls : MonoBehaviour
 
         if (Mathf.Abs(moveX) + Mathf.Abs(moveY) > .2f)
         {
+            running = true;
 
             transform.position += new Vector3(
                 moveX,
@@ -188,6 +233,18 @@ public class PlayerControls : MonoBehaviour
             }
             //Debug.Log("Move Vector: ["+moveX+","+moveY+"]");
 
+        }
+        else
+        {
+            running = false;
+        }
+
+        if (!kicking)
+        {
+            this.kickModel.SetActive(false);
+            this.runModel1.SetActive(running && side == 1);
+            this.runModel2.SetActive(running && side == 2);
+            this.standModel.SetActive(!running);
         }
 
         if (Mathf.Abs(lookX) + Mathf.Abs(lookY) > .2f)
