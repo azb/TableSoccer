@@ -347,6 +347,8 @@ public class NetworkSync : MonoBehaviourPunCallbacks
             rotation,
             parent
             ).transform;
+        
+        Debug.Log("Creating newTransform PrefabName: " + PrefabName);
 
         newTransform.localPosition = localPosition;
 
