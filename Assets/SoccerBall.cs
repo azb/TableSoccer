@@ -58,6 +58,17 @@ public class SoccerBall : MonoBehaviour
         PossessingPlayer = null;
     }
 
+    [PunRPC]
+    void SetPossessingPlayer(int possessingPlayerViewID)
+    {
+        PossessingPlayer = PhotonView.Find(possessingPlayerViewID);
+        Debug.Log("SetPossessingPlayer to ");
+        //Kick the ball
+        rb.velocity = PossessingPlayer.transform.forward * .5f + Vector3.up;
+        PossessingPlayer = null;
+    }
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if (!PhotonNetwork.IsMasterClient)
@@ -66,6 +77,7 @@ public class SoccerBall : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             PossessingPlayer = collision.gameObject.transform.GetComponent<PhotonView>();
+            photonView.RPC("SetPossessingPlayer", RpcTarget.All, PossessingPlayer.ViewID);
         }
     }
 }
