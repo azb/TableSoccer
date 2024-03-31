@@ -620,7 +620,7 @@ MonoBehaviour:
   - {fileID: 1311588478}
   - {fileID: 2129900369}
   - {fileID: 1542433206}
-  UseRandomOffset: 1
+  UseRandomOffset: 0
   RandomOffset: 2
   ClampY: 1
   PrefabsToInstantiate:
