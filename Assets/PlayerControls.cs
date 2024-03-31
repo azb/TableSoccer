@@ -7,18 +7,18 @@ public class PlayerControls : MonoBehaviour
 
     public GameObject AimArrow;
 
-    NetworkedObject networkedObject;
+    PhotonView photonView;
 
     // Start is called before the first frame update
     void Start()
     {
-        networkedObject = GetComponent<NetworkedObject>();
+        photonView = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!networkedObject.IsMine)
+        if (!photonView.IsMine)
             return;
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
