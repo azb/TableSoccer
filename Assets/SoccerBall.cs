@@ -17,10 +17,10 @@ public class SoccerBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.position = PossessingPlayer.transform.position + PossessingPlayer.transform.forward * .01f + Vector3.up * .01f;
+
         if (!PossessingPlayer || !PossessingPlayer.IsMine)
             return;
-
-        transform.position = PossessingPlayer.transform.position + PossessingPlayer.transform.forward * .01f + Vector3.up * .01f;
 
         bool KickButtonPressed = (Input.GetAxis("Fire1") > .1f);
 
