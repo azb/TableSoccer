@@ -62,10 +62,7 @@ public class SoccerBall : MonoBehaviour
     void SetPossessingPlayer(int possessingPlayerViewID)
     {
         PossessingPlayer = PhotonView.Find(possessingPlayerViewID);
-        Debug.Log("SetPossessingPlayer to ");
-        //Kick the ball
-        rb.velocity = PossessingPlayer.transform.forward * .5f + Vector3.up;
-        PossessingPlayer = null;
+        Debug.Log("SetPossessingPlayer to "+ PossessingPlayer.ViewID);
     }
 
 
