@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class SoccerBall : MonoBehaviour
@@ -49,6 +50,9 @@ public class SoccerBall : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         if (collision.gameObject.tag == "Player")
         {
             PossessingPlayer = collision.gameObject.transform;
