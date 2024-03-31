@@ -562,6 +562,8 @@ GameObject:
   - component: {fileID: 1979713450}
   - component: {fileID: 1979713449}
   - component: {fileID: 1979713451}
+  - component: {fileID: 1979713452}
+  - component: {fileID: 1979713453}
   m_Layer: 0
   m_Name: Photon Manager
   m_TagString: Untagged
@@ -626,6 +628,48 @@ MonoBehaviour:
   PrefabsToInstantiate:
   - {fileID: 8115851597211747277, guid: e607294734fd9344781589f2c354bb10, type: 3}
   AutoSpawnObjects: 1
+--- !u!114 &1979713452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979713448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e1490cf0109c214cbfab41e6367121c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameBoardNetworkedObject: {fileID: 0}
+  PlayerPrefab: {fileID: 0}
+  SpawnPoints: []
+  PlayerColorMaterials: []
+  OnDisconnectedAction:
+    m_PersistentCalls:
+      m_Calls: []
+  disconnectCause: 0
+--- !u!114 &1979713453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979713448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2129900368
 GameObject:
   m_ObjectHideFlags: 0
