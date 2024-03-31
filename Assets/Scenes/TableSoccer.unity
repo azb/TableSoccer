@@ -561,7 +561,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1979713450}
   - component: {fileID: 1979713449}
-  - component: {fileID: 1979713451}
   - component: {fileID: 1979713452}
   - component: {fileID: 1979713453}
   m_Layer: 0
@@ -602,32 +601,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1979713451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1979713448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed3b5dcba7bf9114cb13fc59e0a71f55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Sequence: 0
-  SpawnPoints:
-  - {fileID: 1746092843}
-  - {fileID: 1743553655}
-  - {fileID: 1134329306}
-  - {fileID: 1311588478}
-  - {fileID: 2129900369}
-  - {fileID: 1542433206}
-  UseRandomOffset: 0
-  RandomOffset: 2
-  ClampY: 1
-  PrefabsToInstantiate:
-  - {fileID: 8115851597211747277, guid: e607294734fd9344781589f2c354bb10, type: 3}
-  AutoSpawnObjects: 1
 --- !u!114 &1979713452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -641,8 +614,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameBoardNetworkedObject: {fileID: 0}
-  PlayerPrefab: {fileID: 0}
-  SpawnPoints: []
+  PlayerPrefab: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
+  SpawnPoints:
+  - {fileID: 1746092843}
+  - {fileID: 1743553655}
+  - {fileID: 1134329306}
+  - {fileID: 1311588478}
+  - {fileID: 2129900369}
+  - {fileID: 1542433206}
   PlayerColorMaterials: []
   OnDisconnectedAction:
     m_PersistentCalls:

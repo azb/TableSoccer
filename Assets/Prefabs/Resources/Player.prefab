@@ -477,7 +477,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c56b17035c42948807d8ce9b3a80b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdatesPerSecond: 1
+  UpdatesPerSecond: 5
   SyncPosition: 1
   SyncRotation: 1
 --- !u!114 &5305280360536972714
@@ -494,7 +494,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PrefabName: Player
   _ownerID: 
-  ShowSyncedVariables: 0
+  ShowSyncedVariables: 1
   SyncedVariablesString: 
 --- !u!1001 &879275338092425694
 PrefabInstance:
