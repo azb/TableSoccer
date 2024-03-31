@@ -380,6 +380,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 0.1
   AimArrow: {fileID: 2270951954939414873}
+  MoveXAxisQuest: JoystickAxis1
+  MoveYAxisQuest: JoystickAxis2
+  MoveXAxisVisionOS: JoystickAxis9
+  MoveYAxisVisionOS: JoystickAxis10
+  LookXAxisQuest: JoystickAxis3
+  LookYAxisQuest: JoystickAxis4
+  LookXAxisVisionOS: JoystickAxis3
+  LookYAxisVisionOS: JoystickAxis4
+  KickAxisQuest: JoystickAxis3
+  KickAxisVisionOS: JoystickAxis3
+  InvertMoveXQuest: 0
+  InvertMoveYQuest: 0
+  InvertMoveXVisionOS: 0
+  InvertMoveYVisionOS: 1
+  InvertLookXQuest: 0
+  InvertLookYQuest: 0
+  InvertLookXVisionOS: 0
+  InvertLookYVisionOS: 0
+  KickButton: joystick 1 button 1
 --- !u!136 &8744073507444686004
 CapsuleCollider:
   m_ObjectHideFlags: 0

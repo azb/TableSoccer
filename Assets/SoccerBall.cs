@@ -27,7 +27,8 @@ public class SoccerBall : MonoBehaviour
 
         bool KickButtonPressed = (Input.GetAxis("Fire1") > .1f);
 
-
+        KickButtonPressed = Input.GetButton("joystick 1 button 1");
+        Debug.Log("KICK BUTTON PRESSED");
 #if UNITY_ANDROID //Meta Quest Controls
         // Check if the trigger button on the left controller is pressed
         if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))

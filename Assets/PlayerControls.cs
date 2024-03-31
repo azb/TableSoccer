@@ -9,6 +9,42 @@ public class PlayerControls : MonoBehaviour
 
     PhotonView photonView;
 
+    public string MoveXAxisQuest = "JoystickAxis1";
+    public string MoveYAxisQuest = "JoystickAxis2";
+    public string LookXAxisQuest = "JoystickAxis3";
+    public string LookYAxisQuest = "JoystickAxis4";
+    public string KickAxisQuest = "JoystickAxis5";
+    public bool InvertMoveXQuest = false;
+    public bool InvertMoveYQuest = false;
+    public bool InvertLookXQuest = false;
+    public bool InvertLookYQuest = false;
+
+
+    public string MoveXAxisVisionOS = "JoystickAxis1";
+    public string MoveYAxisVisionOS = "JoystickAxis2";
+    public string LookXAxisVisionOS = "JoystickAxis3";
+    public string LookYAxisVisionOS = "JoystickAxis4";
+    public string KickAxisVisionOS = "JoystickAxis5";
+    public bool InvertMoveXVisionOS = false;
+    public bool InvertMoveYVisionOS = false;
+    public bool InvertLookXVisionOS = false;
+    public bool InvertLookYVisionOS = false;
+
+
+    public string MoveXAxisEditor = "JoystickAxis9";
+    public string MoveYAxisEditor = "JoystickAxis10";
+    public string LookXAxisEditor = "JoystickAxis3";
+    public string LookYAxisEditor = "JoystickAxis4";
+    public string KickAxisEditor = "JoystickAxis5";
+    public bool InvertLookXEditor = false;
+    public bool InvertLookYEditor = false;
+
+
+
+
+
+    public string KickButton = "joystick 1 button 1";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,11 +56,99 @@ public class PlayerControls : MonoBehaviour
     {
         if (!photonView.IsMine)
             return;
-        float moveX = Input.GetAxis("Horizontal");
-        float moveY = Input.GetAxis("Vertical");
 
-        float lookX = Input.GetAxis("Horizontal2");
-        float lookY = Input.GetAxis("Vertical2");
+        float moveX;
+        float moveY;
+        float lookX;
+        float lookY;
+
+        // Check the platform and assign appropriate input axis names
+        if (Application.isEditor)
+        {
+            moveX = Input.GetAxis(MoveXAxisEditor);
+            moveY = Input.GetAxis(MoveYAxisEditor);
+
+            if (InvertMoveXEditor)
+            {
+                moveX *= -1;
+            }
+
+            if (InvertMoveYEditor)
+            {
+                moveY *= -1;
+            }
+
+            lookX = Input.GetAxis(KickAxisEditor);
+            lookY = Input.GetAxis(KickAxisEditor);
+
+            if (InvertLookXEditor)
+            {
+                lookX *= -1;
+            }
+
+            if (InvertLookYEditor)
+            {
+                lookY *= -1;
+            }
+        }
+        else
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            moveX = Input.GetAxis(MoveXAxisQuest);
+            moveY = Input.GetAxis(MoveYAxisQuest);
+
+            if (InvertMoveXQuest)
+            {
+                moveX *= -1;
+            }
+
+            if (InvertMoveYQuest)
+            {
+                moveY *= -1;
+            }
+
+            lookX = Input.GetAxis(KickAxisQuest);
+            lookY = Input.GetAxis(KickAxisQuest);
+
+            if (InvertLookXQuest)
+            {
+                lookX *= -1;
+            }
+
+            if (InvertLookYQuest)
+            {
+                lookY *= -1;
+            }
+
+        }
+        else //if (Application.platform == RuntimePlatform.VisionOS)
+        {
+            moveX = Input.GetAxis(MoveXAxisVisionOS);
+            moveY = Input.GetAxis(MoveYAxisVisionOS);
+
+            if (InvertMoveXVisionOS)
+            {
+                moveX *= -1;
+            }
+
+            if (InvertMoveYVisionOS)
+            {
+                moveY *= -1;
+            }
+
+            lookX = Input.GetAxis(LookXAxisVisionOS);
+            lookY = Input.GetAxis(LookYAxisVisionOS);
+
+            if (InvertLookXVisionOS)
+            {
+                lookX *= -1;
+            }
+
+            if (InvertLookYVisionOS)
+            {
+                lookY *= -1;
+            }
+        }
 
 #if UNITY_ANDROID //Meta Quest Controls
         // Check for joystick movement on the left controller
@@ -38,6 +162,7 @@ public class PlayerControls : MonoBehaviour
 
         lookX += rightJoystick.x;
         lookY += rightJoystick.y;
+
 #endif
 
         //Debug.Log("Look Vector: ["+lookX+","+lookY+"]");
