@@ -6,7 +6,7 @@
 *
 * This source code is considered Creator Materials under the definitions of the Leia license agreement.
 */
-#if UNITY_EDITOR
+#if UNITY_EDITOR && UNITY_ANDROID
 using System.IO;
 using UnityEditor;
 using UnityEngine;
