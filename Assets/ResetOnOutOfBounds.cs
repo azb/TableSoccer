@@ -14,12 +14,17 @@ public class ResetOnOutOfBounds : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    public void ResetPosition()
+    {
+        transform.position = startPosition;
+        rb.velocity = Vector3.zero;
+    }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (LayerMask.LayerToName(other.gameObject.layer) == "OutOfBounds")
         {
-            transform.position = startPosition;
-            rb.velocity = Vector3.zero;
+            ResetPosition();
         }
     }
 }
