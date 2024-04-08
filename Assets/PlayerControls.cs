@@ -104,16 +104,39 @@ public class PlayerControls : MonoBehaviour
             Invoke("DoneKicking",.2f);
         }
 
-        float moveX;
-        float moveY;
-        float lookX;
-        float lookY;
+        float moveX = 0;
+        float moveY = 0;
+        float lookX = 0;
+        float lookY = 0;
+
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            Debug.Log("LeftArrow");
+            moveX -= 1;
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            Debug.Log("RightArrow");
+            moveX += 1;
+        }
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            Debug.Log("UpArrow");
+            moveY -= 1;
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            Debug.Log("DownArrow");
+            moveY += 1;
+        }
+
 
         // Check the platform and assign appropriate input axis names
         if (Application.isEditor)
         {
-            moveX = Input.GetAxis(MoveXAxisEditor);
-            moveY = Input.GetAxis(MoveYAxisEditor);
+            moveX += Input.GetAxis(MoveXAxisEditor);
+            moveY += Input.GetAxis(MoveYAxisEditor);
 
             if (InvertMoveXEditor)
             {
@@ -125,8 +148,8 @@ public class PlayerControls : MonoBehaviour
                 moveY *= -1;
             }
 
-            lookX = Input.GetAxis(KickAxisEditor);
-            lookY = Input.GetAxis(KickAxisEditor);
+            lookX += Input.GetAxis(KickAxisEditor);
+            lookY += Input.GetAxis(KickAxisEditor);
 
             if (InvertLookXEditor)
             {
@@ -141,8 +164,8 @@ public class PlayerControls : MonoBehaviour
         else
         if (Application.platform == RuntimePlatform.Android)
         {
-            moveX = Input.GetAxis(MoveXAxisQuest);
-            moveY = Input.GetAxis(MoveYAxisQuest);
+            moveX += Input.GetAxis(MoveXAxisQuest);
+            moveY += Input.GetAxis(MoveYAxisQuest);
 
             if (InvertMoveXQuest)
             {
@@ -154,8 +177,8 @@ public class PlayerControls : MonoBehaviour
                 moveY *= -1;
             }
 
-            lookX = Input.GetAxis(KickAxisQuest);
-            lookY = Input.GetAxis(KickAxisQuest);
+            lookX += Input.GetAxis(KickAxisQuest);
+            lookY += Input.GetAxis(KickAxisQuest);
 
             if (InvertLookXQuest)
             {
@@ -183,8 +206,8 @@ public class PlayerControls : MonoBehaviour
                 moveY *= -1;
             }
 
-            lookX = Input.GetAxis(LookXAxisVisionOS);
-            lookY = Input.GetAxis(LookYAxisVisionOS);
+            lookX += -Input.GetAxis(LookXAxisVisionOS);
+            lookY += Input.GetAxis(LookYAxisVisionOS);
 
             if (InvertLookXVisionOS)
             {
@@ -227,12 +250,11 @@ public class PlayerControls : MonoBehaviour
 
             if (Mathf.Abs(lookX) + Mathf.Abs(lookY) <= .2f)
             {
-                float direction = -Mathf.Atan2(moveY, moveX) * Mathf.Rad2Deg + 90f;
+                float direction = -Mathf.Atan2(moveY, moveX) * Mathf.Rad2Deg - 90f;
 
                 transform.rotation = Quaternion.Euler(0, direction, 0);
             }
             //Debug.Log("Move Vector: ["+moveX+","+moveY+"]");
-
         }
         else
         {

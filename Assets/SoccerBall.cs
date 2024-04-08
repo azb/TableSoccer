@@ -25,10 +25,8 @@ public class SoccerBall : MonoBehaviour
         if (!PossessingPlayer.IsMine)
             return;
 
-        bool KickButtonPressed = (Input.GetAxis("Fire1") > .1f);
+        bool KickButtonPressed = Input.GetButton("joystick 1 button 9") || Input.GetKeyDown(KeyCode.Space);
 
-        KickButtonPressed = Input.GetButton("joystick 1 button 1");
-        Debug.Log("KICK BUTTON PRESSED");
 #if UNITY_ANDROID //Meta Quest Controls
         // Check if the trigger button on the left controller is pressed
         if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
@@ -79,6 +77,20 @@ public class SoccerBall : MonoBehaviour
         {
             PossessingPlayer = collision.gameObject.transform.GetComponent<PhotonView>();
             photonView.RPC("SetPossessingPlayer", RpcTarget.All, PossessingPlayer.ViewID);
+        }
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        Debug.Log("GOAL!!!!!!");
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        if (collision.gameObject.tag == "Goal")
+        {
+            Goal goal = collision.gameObject.transform.GetComponent<Goal>();
+            goal.OnGoal();
+            //photonView.RPC("SetPossessingPlayer", RpcTarget.All, PossessingPlayer.ViewID);
         }
     }
 }
