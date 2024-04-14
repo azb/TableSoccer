@@ -12,15 +12,26 @@ public class ControllerCalibrationUI : MonoBehaviour
     {
         "Neutral",
         "Move Left",
-        "Move Right",
         "Move Forward",
-        "Move Backward",
         "Aim Left",
-        "Aim Right",
         "Aim Forward",
-        "Aim Backward",
+        "Kick"
+        //"Move Right",
+        //"Move Backward",
+        //"Aim Right",
+        //"Aim Backward",
+    };
+
+    string[] requestedInputActionName =
+    {
+        "Neutral",
+        "MoveX",
+        "MoveY",
+        "AimX",
+        "AimY",
         "Kick"
     };
+
 
     public ProgressBar progressBar;
     public GameObject GreenCheckMark;
@@ -67,16 +78,26 @@ public class ControllerCalibrationUI : MonoBehaviour
     };
 
     float[] axisDefaultValue = new float[13];
+    bool[] buttonDefaultValue = new bool[20];
 
     bool stepCompleted = false;
+
+    PlayerControls playerControls;
 
     // Start is called before the first frame update
     void Start()
     {
+        playerControls = FindObjectOfType<PlayerControls>();
         GreenCheckMark.SetActive(false);
+
         for (int i = 1; i <= 12; i++)
         {
             axisDefaultValue[i] = Input.GetAxis("JoystickAxis" + i);
+        }
+
+        for (int i = 0; i < 20; i++)
+        {
+            buttonDefaultValue[i] = Input.GetButton("joystick 1 button " + i);
         }
     }
 
@@ -92,6 +113,15 @@ public class ControllerCalibrationUI : MonoBehaviour
                 for (int i = 1; i <= 12; i++)
                 {
                     axisDefaultValue[i] = Input.GetAxis("JoystickAxis" + i);
+                }
+
+                for (int i = 0; i < 20; i++) // Assuming maximum 20 buttons per joystick
+                {
+                    // Check if the current button is pressed
+                    if (Input.GetButton("joystick 1 button " + i))
+                    {
+                        buttonDefaultValue[i] = Input.GetButton("joystick 1 button " + i);
+                    }
                 }
             }
             else
@@ -130,6 +160,7 @@ public class ControllerCalibrationUI : MonoBehaviour
                 {
                     //Axis has been moved from neutral
                     selectedAxis = "JoystickAxis" + i;
+                    /*
                     if (axisValue > 0)
                     {
                         selectedAxis += "+";
@@ -137,18 +168,44 @@ public class ControllerCalibrationUI : MonoBehaviour
                     else
                     {
                         selectedAxis += "-";
-                    }
+                    }*/
 
-                    selectedInputLabel.text = selectedAxis;
-                    GreenCheckMark.SetActive(true);
-                    stepCompleted = true;
-                    progressBar.progress = 0;
+                    SelectInputForAction(
+                        requestedInputActionName[(int)calibrationScreen],
+                        selectedAxis,
+                        (axisValue < 0)
+                        );
                 }
 
                 //debugText.text += "JoystickAxis" + i + " value: " + axisValue + "\n";
             }
+
+            for (int i = 0; i < 20; i++) // Assuming maximum 20 buttons per joystick
+            {
+                // Check if the current button is pressed
+                if (Input.GetButton("joystick 1 button " + i) != buttonDefaultValue[i])
+                {
+                    selectedAxis = "joystick 1 button " + i;
+                    SelectInputForAction(
+                        requestedInputActionName[(int)calibrationScreen],
+                        selectedAxis,
+                        false
+                        );
+                }
+            }
         }
     }
+
+    void SelectInputForAction(string action, string input, bool invert)
+    {
+        selectedInputLabel.text = input;
+        GreenCheckMark.SetActive(true);
+        stepCompleted = true;
+        progressBar.progress = 0;
+        playerControls.controls[action] = input;
+        playerControls.invertControls[action] = invert;
+    }
+
 
     void NextStep()
     {
@@ -168,8 +225,12 @@ public class ControllerCalibrationUI : MonoBehaviour
             CalibrateInputPanel.SetActive(false);
             CalibrationCompletePanel.SetActive(true);
             GreenCheckMark.SetActive(false);
+            Invoke("Hide", 5f);
         }
     }
 
+    void Hide()
+    {
+        gameObject.SetActive(false);
+    }
 }
-

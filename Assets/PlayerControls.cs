@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using System.Collections.Generic;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class PlayerControls : MonoBehaviour
 
     PhotonView photonView;
 
+
+
+    //QUEST
     public string MoveXAxisQuest = "JoystickAxis1";
     public string MoveYAxisQuest = "JoystickAxis2";
     public string LookXAxisQuest = "JoystickAxis3";
@@ -24,7 +28,7 @@ public class PlayerControls : MonoBehaviour
     public bool InvertLookXQuest = false;
     public bool InvertLookYQuest = false;
 
-
+    //VISION OS
     public string MoveXAxisVisionOS = "JoystickAxis1";
     public string MoveYAxisVisionOS = "JoystickAxis2";
     public string LookXAxisVisionOS = "JoystickAxis3";
@@ -35,7 +39,7 @@ public class PlayerControls : MonoBehaviour
     public bool InvertLookXVisionOS = false;
     public bool InvertLookYVisionOS = false;
 
-
+    //EDITOR
     public string MoveXAxisEditor = "JoystickAxis9";
     public string MoveYAxisEditor = "JoystickAxis10";
     public string LookXAxisEditor = "JoystickAxis3";
@@ -45,6 +49,24 @@ public class PlayerControls : MonoBehaviour
     public bool InvertMoveYEditor = false;
     public bool InvertLookXEditor = false;
     public bool InvertLookYEditor = false;
+
+    public Dictionary<string, string> controls = new Dictionary<string, string>();
+    public Dictionary<string, bool> invertControls = new Dictionary<string, bool>();
+
+    private void Awake()
+    {
+        controls.Add("MoveX", "JoystickAxis1");
+        controls.Add("MoveY", "JoystickAxis2");
+        controls.Add("AimX", "JoystickAxis3");
+        controls.Add("AimY", "JoystickAxis4");
+        controls.Add("Kick", "joystick 1 button 1");
+
+        invertControls.Add("MoveX", false);
+        invertControls.Add("MoveY", false);
+        invertControls.Add("AimX", false);
+        invertControls.Add("AimY", false);
+        invertControls.Add("Kick", false);
+    }
 
     public string KickButton = "joystick 1 button 1";
 
@@ -92,7 +114,8 @@ public class PlayerControls : MonoBehaviour
         if (!photonView.IsMine)
             return;
 
-        bool KickButtonPressed = Input.GetButton("joystick 1 button 1");
+        //bool KickButtonPressed = Input.GetButton("joystick 1 button 1");
+        bool KickButtonPressed = Input.GetButton(controls["Kick"]);
 
         if (KickButtonPressed)
         {
@@ -135,8 +158,11 @@ public class PlayerControls : MonoBehaviour
         // Check the platform and assign appropriate input axis names
         if (Application.isEditor)
         {
-            moveX += Input.GetAxis(MoveXAxisEditor);
-            moveY += Input.GetAxis(MoveYAxisEditor);
+            //moveX += Input.GetAxis(MoveXAxisEditor);
+            //moveY += Input.GetAxis(MoveYAxisEditor);
+
+            moveX += Input.GetAxis(controls["MoveX"]);
+            moveY += Input.GetAxis(controls["MoveY"]);
 
             if (InvertMoveXEditor)
             {
@@ -193,28 +219,28 @@ public class PlayerControls : MonoBehaviour
         }
         else //if (Application.platform == RuntimePlatform.VisionOS)
         {
-            moveX = Input.GetAxis(MoveXAxisVisionOS);
-            moveY = Input.GetAxis(MoveYAxisVisionOS);
+            moveX += Input.GetAxis(controls["MoveX"]);
+            moveY += Input.GetAxis(controls["MoveY"]);
 
-            if (InvertMoveXVisionOS)
+            if (invertControls["MoveX"])
             {
                 moveX *= -1;
             }
 
-            if (InvertMoveYVisionOS)
+            if (invertControls["MoveY"])
             {
                 moveY *= -1;
             }
 
-            lookX += -Input.GetAxis(LookXAxisVisionOS);
-            lookY += Input.GetAxis(LookYAxisVisionOS);
+            lookX += Input.GetAxis(controls["AimX"]);
+            lookY += Input.GetAxis(controls["AimY"]);
 
-            if (InvertLookXVisionOS)
+            if (invertControls["AimX"])
             {
                 lookX *= -1;
             }
 
-            if (InvertLookYVisionOS)
+            if (invertControls["AimY"])
             {
                 lookY *= -1;
             }
@@ -252,7 +278,7 @@ public class PlayerControls : MonoBehaviour
             {
                 float direction = -Mathf.Atan2(moveY, moveX) * Mathf.Rad2Deg - 90f;
 
-                transform.rotation = Quaternion.Euler(0, direction, 0);
+                transform.rotation = Quaternion.Euler(0, direction + 180, 0);
             }
             //Debug.Log("Move Vector: ["+moveX+","+moveY+"]");
         }
