@@ -25,7 +25,23 @@ public class SoccerBall : MonoBehaviour
         if (!PossessingPlayer.IsMine)
             return;
 
-        bool KickButtonPressed = Input.GetButton("joystick 1 button 9") || Input.GetKeyDown(KeyCode.Space);
+        bool KickButtonPressed = Input.GetKeyDown(KeyCode.Space);
+
+        if (PlayerControls.controls["Kick"] != null)
+        {
+            string kickInput = PlayerControls.controls["Kick"];
+            if (kickInput.Contains("button"))
+            {
+                KickButtonPressed |= Input.GetButton(kickInput);
+                Debug.Log("kick getting here1 KickButtonPressed = "+ KickButtonPressed);
+            }
+            else if (kickInput.Contains("Axis"))
+            {
+                Debug.Log("Input.GetAxis(kickInput) = " + Input.GetAxis(kickInput));
+                Debug.Log("PlayerControls.neutralValue[Kick] = " + PlayerControls.neutralValue["Kick"]);
+                KickButtonPressed = Mathf.Abs(Input.GetAxis(kickInput) - PlayerControls.neutralValue["Kick"]) > .2f;
+            }
+        }
 
 #if UNITY_ANDROID //Meta Quest Controls
         // Check if the trigger button on the left controller is pressed

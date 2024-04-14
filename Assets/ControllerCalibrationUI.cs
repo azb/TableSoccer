@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -77,17 +77,18 @@ public class ControllerCalibrationUI : MonoBehaviour
         CompleteScreen
     };
 
-    float[] axisDefaultValue = new float[13];
+    public float[] axisDefaultValue = new float[13];
     bool[] buttonDefaultValue = new bool[20];
 
     bool stepCompleted = false;
+    bool configCompleted = false;
 
     PlayerControls playerControls;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerControls = FindObjectOfType<PlayerControls>();
+        Invoke("CheckForPlayer", 1f);
         GreenCheckMark.SetActive(false);
 
         for (int i = 1; i <= 12; i++)
@@ -100,6 +101,18 @@ public class ControllerCalibrationUI : MonoBehaviour
             buttonDefaultValue[i] = Input.GetButton("joystick 1 button " + i);
         }
     }
+
+    void CheckForPlayer()
+    {
+
+        playerControls = FindObjectOfType<PlayerControls>();
+        if (playerControls == null)
+        {
+            Invoke("CheckForPlayer",1f);
+        }
+
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -126,9 +139,31 @@ public class ControllerCalibrationUI : MonoBehaviour
             }
             else
             {
-                calibrationScreen++;
-                CalibrateNeutralPanel.SetActive(false);
-                CalibrateInputPanel.SetActive(true);
+                if (playerControls != null)
+                {
+                    CalibrateNeutralPanel.SetActive(false);
+                    if (configCompleted)
+                    {
+                        CalibrationCompletePanel.SetActive(true);
+                        calibrationScreen = CalibrationScreen.CompleteScreen;
+                        
+                        foreach(KeyValuePair<string, string> pair in PlayerControls.controls)
+                        {
+                            if (PlayerControls.controls[pair.Key].Contains("Axis"))
+                            {
+                                PlayerControls.neutralValue[pair.Key] = Input.GetAxis(pair.Value);
+                            }
+                        }
+
+                        Invoke("Hide", 1f);
+                    }
+                    else
+                    {
+                        CalibrateInputPanel.SetActive(true);
+                        calibrationScreen++;
+                    }
+
+                }
             }
         }
         else
@@ -137,7 +172,7 @@ public class ControllerCalibrationUI : MonoBehaviour
             {
                 if (progressBar.progress < progressBar.maxProgress)
                 {
-                    progressBar.progress += Time.deltaTime * 75f;
+                    progressBar.progress += Time.deltaTime * 150f;
                 }
                 else
                 {
@@ -153,33 +188,6 @@ public class ControllerCalibrationUI : MonoBehaviour
         {
             string selectedAxis = "";
 
-            for (int i = 1; i <= 12; i++)
-            {
-                float axisValue = Input.GetAxis("JoystickAxis" + i);
-                if (Mathf.Abs(axisValue - axisDefaultValue[i]) > .85f)
-                {
-                    //Axis has been moved from neutral
-                    selectedAxis = "JoystickAxis" + i;
-                    /*
-                    if (axisValue > 0)
-                    {
-                        selectedAxis += "+";
-                    }
-                    else
-                    {
-                        selectedAxis += "-";
-                    }*/
-
-                    SelectInputForAction(
-                        requestedInputActionName[(int)calibrationScreen],
-                        selectedAxis,
-                        (axisValue < 0)
-                        );
-                }
-
-                //debugText.text += "JoystickAxis" + i + " value: " + axisValue + "\n";
-            }
-
             for (int i = 0; i < 20; i++) // Assuming maximum 20 buttons per joystick
             {
                 // Check if the current button is pressed
@@ -193,19 +201,39 @@ public class ControllerCalibrationUI : MonoBehaviour
                         );
                 }
             }
+
+            for (int i = 1; i <= 12; i++)
+            {
+                float axisValue = Input.GetAxis("JoystickAxis" + i);
+                if (Mathf.Abs(axisValue - axisDefaultValue[i]) > .85f)
+                {
+                    //Axis has been moved from neutral
+                    selectedAxis = "JoystickAxis" + i;
+
+                    SelectInputForAction(
+                        requestedInputActionName[(int)calibrationScreen],
+                        selectedAxis,
+                        (axisValue < 0),
+                        axisDefaultValue[i]
+                        );
+                }
+
+                //debugText.text += "JoystickAxis" + i + " value: " + axisValue + "\n";
+            }
         }
     }
 
-    void SelectInputForAction(string action, string input, bool invert)
+    void SelectInputForAction(string action, string input, bool invert, float neutralValue = 0)
     {
         selectedInputLabel.text = input;
         GreenCheckMark.SetActive(true);
         stepCompleted = true;
         progressBar.progress = 0;
-        playerControls.controls[action] = input;
-        playerControls.invertControls[action] = invert;
+        Debug.Log("invert "+ action + " = " + invert);
+        PlayerControls.controls[action] = input;
+        PlayerControls.invertControls[action] = invert;
+        PlayerControls.neutralValue[action] = neutralValue;
     }
-
 
     void NextStep()
     {
@@ -223,9 +251,10 @@ public class ControllerCalibrationUI : MonoBehaviour
         else
         {
             CalibrateInputPanel.SetActive(false);
-            CalibrationCompletePanel.SetActive(true);
+            CalibrateNeutralPanel.SetActive(true);
             GreenCheckMark.SetActive(false);
-            Invoke("Hide", 5f);
+            configCompleted = true;
+            calibrationScreen = CalibrationScreen.CalibrateNeutral;
         }
     }
 

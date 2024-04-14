@@ -50,8 +50,9 @@ public class PlayerControls : MonoBehaviour
     public bool InvertLookXEditor = false;
     public bool InvertLookYEditor = false;
 
-    public Dictionary<string, string> controls = new Dictionary<string, string>();
-    public Dictionary<string, bool> invertControls = new Dictionary<string, bool>();
+    public static Dictionary<string, string> controls = new Dictionary<string, string>();
+    public static Dictionary<string, bool> invertControls = new Dictionary<string, bool>();
+    public static Dictionary<string, float> neutralValue = new Dictionary<string, float>();
 
     private void Awake()
     {
@@ -66,6 +67,12 @@ public class PlayerControls : MonoBehaviour
         invertControls.Add("AimX", false);
         invertControls.Add("AimY", false);
         invertControls.Add("Kick", false);
+
+        neutralValue.Add("MoveX", 0);
+        neutralValue.Add("MoveY", 0);
+        neutralValue.Add("AimX", 0);
+        neutralValue.Add("AimY", 0);
+        neutralValue.Add("Kick", 0);
     }
 
     public string KickButton = "joystick 1 button 1";
@@ -155,96 +162,32 @@ public class PlayerControls : MonoBehaviour
         }
 
 
-        // Check the platform and assign appropriate input axis names
-        if (Application.isEditor)
+        moveX -= Input.GetAxis(controls["MoveX"]);
+        moveY += Input.GetAxis(controls["MoveY"]);
+
+        if (invertControls["MoveX"])
         {
-            //moveX += Input.GetAxis(MoveXAxisEditor);
-            //moveY += Input.GetAxis(MoveYAxisEditor);
-
-            moveX += Input.GetAxis(controls["MoveX"]);
-            moveY += Input.GetAxis(controls["MoveY"]);
-
-            if (InvertMoveXEditor)
-            {
-                moveX *= -1;
-            }
-
-            if (InvertMoveYEditor)
-            {
-                moveY *= -1;
-            }
-
-            lookX += Input.GetAxis(KickAxisEditor);
-            lookY += Input.GetAxis(KickAxisEditor);
-
-            if (InvertLookXEditor)
-            {
-                lookX *= -1;
-            }
-
-            if (InvertLookYEditor)
-            {
-                lookY *= -1;
-            }
+            moveX *= -1;
         }
-        else
-        if (Application.platform == RuntimePlatform.Android)
+
+        if (invertControls["MoveY"])
         {
-            moveX += Input.GetAxis(MoveXAxisQuest);
-            moveY += Input.GetAxis(MoveYAxisQuest);
-
-            if (InvertMoveXQuest)
-            {
-                moveX *= -1;
-            }
-
-            if (InvertMoveYQuest)
-            {
-                moveY *= -1;
-            }
-
-            lookX += Input.GetAxis(KickAxisQuest);
-            lookY += Input.GetAxis(KickAxisQuest);
-
-            if (InvertLookXQuest)
-            {
-                lookX *= -1;
-            }
-
-            if (InvertLookYQuest)
-            {
-                lookY *= -1;
-            }
-
+            moveY *= -1;
         }
-        else //if (Application.platform == RuntimePlatform.VisionOS)
+
+        lookX += Input.GetAxis(controls["AimX"]);
+        lookY += Input.GetAxis(controls["AimY"]);
+
+        if (invertControls["AimX"])
         {
-            moveX += Input.GetAxis(controls["MoveX"]);
-            moveY += Input.GetAxis(controls["MoveY"]);
-
-            if (invertControls["MoveX"])
-            {
-                moveX *= -1;
-            }
-
-            if (invertControls["MoveY"])
-            {
-                moveY *= -1;
-            }
-
-            lookX += Input.GetAxis(controls["AimX"]);
-            lookY += Input.GetAxis(controls["AimY"]);
-
-            if (invertControls["AimX"])
-            {
-                lookX *= -1;
-            }
-
-            if (invertControls["AimY"])
-            {
-                lookY *= -1;
-            }
+            lookX *= -1;
         }
+
+        if (invertControls["AimY"])
+        {
+            lookY *= -1;
+        }
+        
 
 #if UNITY_ANDROID //Meta Quest Controls
         // Check for joystick movement on the left controller
@@ -261,8 +204,6 @@ public class PlayerControls : MonoBehaviour
 
 #endif
 
-        //Debug.Log("Look Vector: ["+lookX+","+lookY+"]");
-
         if (Mathf.Abs(moveX) + Mathf.Abs(moveY) > .2f)
         {
             running = true;
@@ -274,13 +215,14 @@ public class PlayerControls : MonoBehaviour
                 )
                 * Time.deltaTime * MoveSpeed;
 
+            // If not aiming with aim thumbstick,
+            // set the direction to movement direction
             if (Mathf.Abs(lookX) + Mathf.Abs(lookY) <= .2f)
             {
                 float direction = -Mathf.Atan2(moveY, moveX) * Mathf.Rad2Deg - 90f;
 
                 transform.rotation = Quaternion.Euler(0, direction + 180, 0);
             }
-            //Debug.Log("Move Vector: ["+moveX+","+moveY+"]");
         }
         else
         {
@@ -295,10 +237,11 @@ public class PlayerControls : MonoBehaviour
             this.standModel.SetActive(!running);
         }
 
-        if (Mathf.Abs(lookX) + Mathf.Abs(lookY) > .2f)
+        //If aiming with aim thumbstick
+        if (Mathf.Abs(lookX) + Mathf.Abs(lookY) >= .2f)
         {
             AimArrow.SetActive(true);
-            float direction = -Mathf.Atan2(lookY, lookX) * Mathf.Rad2Deg + 180f;
+            float direction = Mathf.Atan2(lookY, lookX) * Mathf.Rad2Deg - 90f;
 
 #if UNITY_ANDROID && !UNITY_EDITOR //Meta Quest Controls
             direction -= 90f;
