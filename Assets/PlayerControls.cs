@@ -153,18 +153,17 @@ public class PlayerControls : MonoBehaviour
         if (Input.GetKey(KeyCode.UpArrow))
         {
             Debug.Log("UpArrow");
-            moveY -= 1;
+            moveY += 1;
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
             Debug.Log("DownArrow");
-            moveY += 1;
+            moveY -= 1;
         }
-
 
         moveX -= Input.GetAxis(controls["MoveX"]);
         moveY += Input.GetAxis(controls["MoveY"]);
-
+        
         if (invertControls["MoveX"])
         {
             moveX *= -1;
@@ -253,5 +252,17 @@ public class PlayerControls : MonoBehaviour
         {
             AimArrow.SetActive(false);
         }
+        
+        float x = transform.position.x;
+        float y = transform.position.y;
+        float z = transform.position.z;
+        x = Mathf.Clamp(x, -.29f, .29f);
+        z = Mathf.Clamp(z, -.46f, .46f);
+
+        transform.position = new Vector3(
+                x,
+                y,
+                z
+            );
     }
 }
