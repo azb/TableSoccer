@@ -43,8 +43,22 @@ namespace Photon.Pun.UtilityScripts
             if (this.AutoConnect)
             {
                 this.ConnectNow();
+                Invoke("CheckConnection",15f);
             }
         }
+
+        void CheckConnection()
+        {
+            //Check if the photon network is still connected and joined in a room
+            //if not, attempt to reconnect and join a room
+            if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
+            {
+                this.ConnectNow();
+            }
+
+            Invoke("CheckConnection", 10f);
+        }
+
 
         public void ConnectNow()
         {
