@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using System;
+using System.IO;
 
 public class ControllerCalibrationUI : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class ControllerCalibrationUI : MonoBehaviour
 
     string[] requestedInputLabels =
     {
+        "WaitingForController",
         "Neutral",
         "Move Left",
         "Move Forward",
@@ -24,6 +27,7 @@ public class ControllerCalibrationUI : MonoBehaviour
 
     string[] requestedInputActionName =
     {
+        "WaitingForController",
         "Neutral",
         "MoveX",
         "MoveY",
@@ -32,16 +36,16 @@ public class ControllerCalibrationUI : MonoBehaviour
         "Kick"
     };
 
-
     public ProgressBar progressBar;
     public GameObject GreenCheckMark;
-
 
     public GameObject CalibrateNeutralPanel;
 
     public GameObject CalibrateInputPanel;
 
     public GameObject CalibrationCompletePanel;
+
+    public GameObject ControllerNotFoundPanel;
 
     public GameObject MoveRightPanel;
     public GameObject MoveUpPanel;
@@ -61,9 +65,10 @@ public class ControllerCalibrationUI : MonoBehaviour
     public string LookYAxis = "";
     public string KickButton = "";
 
-    CalibrationScreen calibrationScreen = CalibrationScreen.CalibrateNeutral;
+    CalibrationScreen calibrationScreen = CalibrationScreen.ConnectAController;
 
     public enum CalibrationScreen {
+        ConnectAController,
         CalibrateNeutral,
         MoveLeftScreen,
         MoveRightScreen,
@@ -85,9 +90,49 @@ public class ControllerCalibrationUI : MonoBehaviour
 
     PlayerControls playerControls;
 
-    // Start is called before the first frame update
+    void CheckForController()
+    {
+        string[] joystickNames = Input.GetJoystickNames();
+        Debug.Log("Checking for controller");
+        if (joystickNames.Length > 0)
+        {
+            Debug.Log("Game controller found with name "+ joystickNames[0]);
+            //If controller is found, go to calibrate neutral screen
+            ControllerNotFoundPanel.SetActive(false);
+            CalibrateNeutralPanel.SetActive(true);
+            calibrationScreen = CalibrationScreen.CalibrateNeutral;
+            progressBar.gameObject.SetActive(true);
+        }
+        else
+        {
+            //If no controller is found, prompt user to connect a controller
+            ControllerNotFoundPanel.SetActive(true);
+            CalibrateNeutralPanel.SetActive(false);
+            progressBar.gameObject.SetActive(false);
+            //Periodically check if a controller was connected until one is connected
+            Invoke("CheckForController", 3f);
+        }
+    }
+
     void Start()
     {
+        CheckForController();
+
+        string controlsFileName = Application.persistentDataPath + "/Controls.csv";
+        Debug.Log("controlsFileName = "+ controlsFileName);
+        if (File.Exists("Controls.csv"))
+        {
+            File.OpenRead("Controls.csv");
+
+            string controls = File.ReadAllText("Controls.csv");
+
+            Debug.Log("Controls.csv contents = "+controls);
+        }
+        else
+        {
+            Debug.Log("Controls.csv not found");
+        }
+
         Invoke("CheckForPlayer", 1f);
         GreenCheckMark.SetActive(false);
 
@@ -110,13 +155,16 @@ public class ControllerCalibrationUI : MonoBehaviour
         {
             Invoke("CheckForPlayer",1f);
         }
-
     }
-
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameObject.SetActive(false);
+        }
+
         if (calibrationScreen == CalibrationScreen.CalibrateNeutral)
         {
             if (progressBar.progress < progressBar.maxProgress)
@@ -220,6 +268,26 @@ public class ControllerCalibrationUI : MonoBehaviour
 
                 //debugText.text += "JoystickAxis" + i + " value: " + axisValue + "\n";
             }
+            /*
+            if (Input.anyKey)
+            {
+                foreach (KeyCode kcode in Enum.GetValues(typeof(KeyCode)))
+                {
+                    if (Input.GetKey(kcode))
+                    {
+                        //Debug.Log("KeyCode down: " + kcode);
+                        selectedAxis = "keycode " + kcode;
+
+                        SelectInputForAction(
+                            requestedInputActionName[(int)calibrationScreen],
+                            selectedAxis,
+                            false,
+                            0
+                            );
+                    }
+                }
+            }*/
+
         }
     }
 
