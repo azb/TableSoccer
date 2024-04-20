@@ -46,6 +46,7 @@ public class ControllerCalibrationUI : MonoBehaviour
     public GameObject CalibrationCompletePanel;
 
     public GameObject ControllerNotFoundPanel;
+    public GameObject ControllerDisconnectedNotification;
 
     public GameObject MoveRightPanel;
     public GameObject MoveUpPanel;
@@ -64,6 +65,8 @@ public class ControllerCalibrationUI : MonoBehaviour
     public string LookXAxis = "";
     public string LookYAxis = "";
     public string KickButton = "";
+
+    public GameObject[] tutorialGameObjects;
 
     CalibrationScreen calibrationScreen = CalibrationScreen.ConnectAController;
 
@@ -93,25 +96,35 @@ public class ControllerCalibrationUI : MonoBehaviour
     void CheckForController()
     {
         string[] joystickNames = Input.GetJoystickNames();
-        Debug.Log("Checking for controller");
-        if (joystickNames.Length > 0)
+
+        if (calibrationScreen == CalibrationScreen.ConnectAController)
         {
-            Debug.Log("Game controller found with name "+ joystickNames[0]);
-            //If controller is found, go to calibrate neutral screen
-            ControllerNotFoundPanel.SetActive(false);
-            CalibrateNeutralPanel.SetActive(true);
-            calibrationScreen = CalibrationScreen.CalibrateNeutral;
-            progressBar.gameObject.SetActive(true);
+            Debug.Log("Checking for controller joystickNames.Length = "+ joystickNames.Length);
+            
+            if (joystickNames.Length > 0)
+            {
+                Debug.Log("Game controller found with name "+ joystickNames[0]);
+                //If controller is found, go to calibrate neutral screen
+                ControllerNotFoundPanel.SetActive(false);
+                CalibrateNeutralPanel.SetActive(true);
+                calibrationScreen = CalibrationScreen.CalibrateNeutral;
+                progressBar.gameObject.SetActive(true);
+            }
+            else
+            {
+                //If no controller is found, prompt user to connect a controller
+                ControllerNotFoundPanel.SetActive(true);
+                CalibrateNeutralPanel.SetActive(false);
+                progressBar.gameObject.SetActive(false);
+                //Periodically check if a controller was connected until one is connected
+            }
         }
         else
         {
-            //If no controller is found, prompt user to connect a controller
-            ControllerNotFoundPanel.SetActive(true);
-            CalibrateNeutralPanel.SetActive(false);
-            progressBar.gameObject.SetActive(false);
-            //Periodically check if a controller was connected until one is connected
-            Invoke("CheckForController", 3f);
+            ControllerDisconnectedNotification.SetActive(joystickNames.Length == 0);
         }
+
+        Invoke("CheckForController", 3f);
     }
 
     void Start()
@@ -156,6 +169,18 @@ public class ControllerCalibrationUI : MonoBehaviour
             Invoke("CheckForPlayer",1f);
         }
     }
+
+    void EnableTutorialObject()
+    {
+        for (int i = 0; i < tutorialGameObjects.Length; i++)
+        {
+            if (tutorialGameObjects[i] != null)
+            {
+                tutorialGameObjects[i].SetActive(i == (int)calibrationScreen);
+            }
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -324,6 +349,7 @@ public class ControllerCalibrationUI : MonoBehaviour
             configCompleted = true;
             calibrationScreen = CalibrationScreen.CalibrateNeutral;
         }
+        EnableTutorialObject();
     }
 
     void Hide()
