@@ -54,6 +54,8 @@ public class PlayerControls : MonoBehaviour
 
     private void Awake()
     {
+        if (controls.ContainsKey("MoveX"))
+            return;
         controls.Add("MoveX", "JoystickAxis1");
         controls.Add("MoveY", "JoystickAxis2");
         controls.Add("AimX", "JoystickAxis3");
