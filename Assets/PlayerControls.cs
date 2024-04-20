@@ -140,12 +140,9 @@ public class PlayerControls : MonoBehaviour
                 if (kickInput.Contains("button"))
                 {
                     kickButtonPressed |= Input.GetButtonDown(kickInput);
-                    Debug.Log("kick getting here1 KickButtonPressed = " + kickButtonPressed);
                 }
                 else if (kickInput.Contains("Axis"))
                 {
-                    Debug.Log("Input.GetAxis(kickInput) = " + Input.GetAxis(kickInput));
-                    Debug.Log("PlayerControls.neutralValue[Kick] = " + PlayerControls.neutralValue["Kick"]);
                     kickButtonPressed = Mathf.Abs(Input.GetAxis(kickInput) - PlayerControls.neutralValue["Kick"]) > .2f;
                 }
             }
@@ -197,23 +194,19 @@ public class PlayerControls : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            Debug.Log("LeftArrow");
             moveX -= 1;
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            Debug.Log("RightArrow");
             moveX += 1;
         }
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            Debug.Log("UpArrow");
             moveY += 1;
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            Debug.Log("DownArrow");
             moveY -= 1;
         }
 
