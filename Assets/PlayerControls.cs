@@ -124,6 +124,7 @@ public class PlayerControls : MonoBehaviour
 
     bool running;
     Vector3 prevPosition;
+    float timeSincleLastRun = 0;
 
     // Update is called once per frame
     void Update()
@@ -142,10 +143,15 @@ public class PlayerControls : MonoBehaviour
             {
                 prevPosition = transform.position;
                 running = true;
+                timeSincleLastRun = 0;
             }
             else
             {
-                running = false;
+                timeSincleLastRun += Time.deltaTime;
+                if (timeSincleLastRun > 1)
+                {
+                    running = false;
+                }
             }
 
             return;
