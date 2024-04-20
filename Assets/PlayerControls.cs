@@ -161,7 +161,7 @@ public class PlayerControls : MonoBehaviour
         }
 
         //bool KickButtonPressed = Input.GetButton("joystick 1 button 1");
-        bool KickButtonPressed = Input.GetButton(controls["Kick"]);
+        bool KickButtonPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown(controls["Kick"]);
 
         if (KickButtonPressed)
         {
