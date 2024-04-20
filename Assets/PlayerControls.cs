@@ -140,7 +140,7 @@ public class PlayerControls : MonoBehaviour
                 if (kickInput.Contains("button"))
                 {
                     kickButtonPressed |= Input.GetButtonDown(kickInput);
-                    Debug.Log("kick getting here1 KickButtonPressed = " + KickButtonPressed);
+                    Debug.Log("kick getting here1 KickButtonPressed = " + kickButtonPressed);
                 }
                 else if (kickInput.Contains("Axis"))
                 {
