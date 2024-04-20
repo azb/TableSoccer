@@ -15,8 +15,6 @@ public class PlayerControls : MonoBehaviour
 
     PhotonView photonView;
 
-
-
     //QUEST
     public string MoveXAxisQuest = "JoystickAxis1";
     public string MoveYAxisQuest = "JoystickAxis2";
@@ -113,25 +111,52 @@ public class PlayerControls : MonoBehaviour
         kickModel.SetActive(false);
     }
 
+    [PunRPC]
+    public void Kick()
+    {
+        kicking = true;
+        runModel1.SetActive(false);
+        runModel2.SetActive(false);
+        standModel.SetActive(false);
+        kickModel.SetActive(true);
+        Invoke("DoneKicking", .2f);
+    }
+
     bool running;
+    Vector3 prevPosition;
 
     // Update is called once per frame
     void Update()
     {
+        if (!kicking)
+        {
+            this.kickModel.SetActive(false);
+            this.runModel1.SetActive(running && side == 1);
+            this.runModel2.SetActive(running && side == 2);
+            this.standModel.SetActive(!running);
+        }
+
         if (!photonView.IsMine)
+        {
+            if (Vector3.Distance(transform.position , prevPosition) > 0)
+            {
+                prevPosition = transform.position;
+                running = true;
+            }
+            else
+            {
+                running = false;
+            }
+
             return;
+        }
 
         //bool KickButtonPressed = Input.GetButton("joystick 1 button 1");
         bool KickButtonPressed = Input.GetButton(controls["Kick"]);
 
         if (KickButtonPressed)
         {
-            kicking = true;
-            runModel1.SetActive(false);
-            runModel2.SetActive(false);
-            standModel.SetActive(false);
-            kickModel.SetActive(true);
-            Invoke("DoneKicking",.2f);
+            photonView.RPC("Kick",RpcTarget.All);
         }
 
         float moveX = 0;
@@ -226,14 +251,6 @@ public class PlayerControls : MonoBehaviour
         else
         {
             running = false;
-        }
-
-        if (!kicking)
-        {
-            this.kickModel.SetActive(false);
-            this.runModel1.SetActive(running && side == 1);
-            this.runModel2.SetActive(running && side == 2);
-            this.standModel.SetActive(!running);
         }
 
         //If aiming with aim thumbstick
