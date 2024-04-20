@@ -116,6 +116,7 @@ public class PlayerControls : MonoBehaviour
     [PunRPC]
     public void Kick()
     {
+        Debug.Log("Kick");
         kicking = true;
         runModel1.SetActive(false);
         runModel2.SetActive(false);
