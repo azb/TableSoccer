@@ -129,6 +129,31 @@ public class PlayerControls : MonoBehaviour
     Vector3 prevPosition;
     float timeSincleLastRun = 0;
 
+    public static bool KickButtonPressed
+    {
+        get
+        {
+            bool kickButtonPressed = false;
+            if (PlayerControls.controls["Kick"] != null)
+            {
+                string kickInput = PlayerControls.controls["Kick"];
+                if (kickInput.Contains("button"))
+                {
+                    kickButtonPressed |= Input.GetButtonDown(kickInput);
+                    Debug.Log("kick getting here1 KickButtonPressed = " + KickButtonPressed);
+                }
+                else if (kickInput.Contains("Axis"))
+                {
+                    Debug.Log("Input.GetAxis(kickInput) = " + Input.GetAxis(kickInput));
+                    Debug.Log("PlayerControls.neutralValue[Kick] = " + PlayerControls.neutralValue["Kick"]);
+                    kickButtonPressed = Mathf.Abs(Input.GetAxis(kickInput) - PlayerControls.neutralValue["Kick"]) > .2f;
+                }
+            }
+
+            return kickButtonPressed || Input.GetKeyDown(KeyCode.Space);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -160,10 +185,7 @@ public class PlayerControls : MonoBehaviour
             return;
         }
 
-        //bool KickButtonPressed = Input.GetButton("joystick 1 button 1");
-        bool KickButtonPressed = Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown(controls["Kick"]);
-
-        if (KickButtonPressed)
+        if (PlayerControls.KickButtonPressed)
         {
             photonView.RPC("Kick",RpcTarget.All);
         }
