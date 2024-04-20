@@ -153,9 +153,10 @@ public class PlayerControls : MonoBehaviour
                     running = false;
                 }
             }
+
+            return;
         }
-        else
-        {
+
         //bool KickButtonPressed = Input.GetButton("joystick 1 button 1");
         bool KickButtonPressed = Input.GetButton(controls["Kick"]);
 
@@ -286,6 +287,5 @@ public class PlayerControls : MonoBehaviour
                 y,
                 z
             );
-        }
     }
 }
