@@ -96,7 +96,6 @@ public class PlayerControls : MonoBehaviour
         }
 
         Invoke("SwitchSide", .2f);
-        this.enabled = true;
     }
 
 
