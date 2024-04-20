@@ -150,7 +150,7 @@ public class PlayerControls : MonoBehaviour
             else
             {
                 timeSincleLastRun += Time.deltaTime;
-                if (timeSincleLastRun > .3)
+                if (timeSincleLastRun > .05)
                 {
                     running = false;
                 }
