@@ -297,8 +297,8 @@ public class PlayerControls : MonoBehaviour
         float x = transform.position.x;
         float y = transform.position.y;
         float z = transform.position.z;
-        x = Mathf.Clamp(x, -.29f, .29f);
-        z = Mathf.Clamp(z, -.46f, .46f);
+        x = Mathf.Clamp(x, -.39f, .39f);
+        z = Mathf.Clamp(z, -.64f, .64f);
 
         transform.position = new Vector3(
                 x,
