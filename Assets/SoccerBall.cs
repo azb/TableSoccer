@@ -82,12 +82,12 @@ public class SoccerBall : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("GOAL!!!!!!");
         if (!PhotonNetwork.IsMasterClient)
             return;
 
         if (collision.gameObject.tag == "Goal")
         {
+            Debug.Log("GOAL!!!!!!");
             Goal goal = collision.gameObject.transform.GetComponent<Goal>();
             goal.OnGoal();
             //photonView.RPC("SetPossessingPlayer", RpcTarget.All, PossessingPlayer.ViewID);
