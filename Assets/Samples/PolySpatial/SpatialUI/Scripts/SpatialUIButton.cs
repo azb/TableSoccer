@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace PolySpatial.Samples
 {
@@ -13,6 +14,8 @@ namespace PolySpatial.Samples
         [SerializeField]
         string m_ButtonText;
 
+        public UnityEvent onClick;
+
         MeshRenderer m_MeshRenderer;
 
         void OnEnable()
@@ -23,6 +26,8 @@ namespace PolySpatial.Samples
         public override void Press(Vector3 position)
         {
             base.Press(position);
+
+            onClick.Invoke();
 
             if (WasPressed != null)
             {

@@ -6,12 +6,14 @@ public class SoccerBall : MonoBehaviour
     public PhotonView PossessingPlayer; //Which player currently possesses control over the ball
     Rigidbody rb;
     PhotonView photonView;
+    ResetOnOutOfBounds resetter;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         photonView = GetComponent<PhotonView>();
+        resetter = GetComponent<ResetOnOutOfBounds>();
     }
 
     // Update is called once per frame
@@ -20,7 +22,7 @@ public class SoccerBall : MonoBehaviour
         if (!PossessingPlayer)
             return;
 
-        transform.position = PossessingPlayer.transform.position + PossessingPlayer.transform.forward * .01f + Vector3.up * .01f;
+        transform.position = PossessingPlayer.transform.position + PossessingPlayer.transform.forward * .01f + Vector3.up * .005f;
 
         if (!PossessingPlayer.IsMine)
             return;
@@ -82,15 +84,21 @@ public class SoccerBall : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("GOAL!!!!!!");
         if (!PhotonNetwork.IsMasterClient)
             return;
 
         if (collision.gameObject.tag == "Goal")
         {
+            Debug.Log("GOAL!!!!!!");
             Goal goal = collision.gameObject.transform.GetComponent<Goal>();
             goal.OnGoal();
-            //photonView.RPC("SetPossessingPlayer", RpcTarget.All, PossessingPlayer.ViewID);
+            photonView.RPC("ResetBall", RpcTarget.All);
         }
+    }
+
+    [PunRPC]
+    void ResetBall()
+    {
+        resetter.ResetPosition();
     }
 }

@@ -24,7 +24,11 @@ namespace PolySpatial.Samples
         void WasPressed(string buttonText, MeshRenderer meshrenderer)
         {
             var randomObject = Random.Range(0, m_ObjectsToSpawn.Count);
-            Instantiate(m_ObjectsToSpawn[randomObject], m_SpawnPosition.position, Quaternion.identity);
+            Instantiate(
+                m_ObjectsToSpawn[randomObject],
+                m_SpawnPosition.position,
+                Quaternion.identity
+            );
         }
     }
 }

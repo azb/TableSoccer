@@ -199,8 +199,9 @@ public class PlayerControls : MonoBehaviour
             return;
         }
 
-        if (PlayerControls.KickButtonPressed)
+        if (PlayerControls.KickButtonPressed && !kicking)
         {
+            kicking = true;
             photonView.RPC("Kick",RpcTarget.All);
         }
 
@@ -314,8 +315,8 @@ public class PlayerControls : MonoBehaviour
         float x = transform.position.x;
         float y = transform.position.y;
         float z = transform.position.z;
-        x = Mathf.Clamp(x, -.29f, .29f);
-        z = Mathf.Clamp(z, -.46f, .46f);
+        x = Mathf.Clamp(x, -.27f, .27f);
+        z = Mathf.Clamp(z, -.43f, .43f);
 
         transform.position = new Vector3(
                 x,

@@ -1508,51 +1508,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 235, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &339371872
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 339371874}
-  - component: {fileID: 339371873}
-  m_Layer: 0
-  m_Name: Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &339371873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339371872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b75659ca994f6498faf629f5af310336, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Touch: {fileID: -7956929315595962687, guid: 660d0bc49ad5feb4e83f78a97d15b9fc, type: 3}
---- !u!4 &339371874
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339371872}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &426148094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,6 +1645,9 @@ MonoBehaviour:
   SelectedColor: {r: 0.1254, g: 0.5882, b: 0.9529, a: 1}
   UnselectedColor: {r: 0.1764, g: 0.1764, b: 0.1764, a: 1}
   m_ButtonText: 
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &529888193
 GameObject:
   m_ObjectHideFlags: 0
@@ -3141,7 +3099,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -136790395949940791, guid: 18184386a48784570818c7a765714fb6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -3686,6 +3645,9 @@ MonoBehaviour:
   SelectedColor: {r: 0.1254, g: 0.5882, b: 0.9529, a: 1}
   UnselectedColor: {r: 0.1764, g: 0.1764, b: 0.1764, a: 1}
   m_ButtonText: Option 2
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &1510430038
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4217,6 +4179,9 @@ MonoBehaviour:
   SelectedColor: {r: 0.1254, g: 0.5882, b: 0.9529, a: 1}
   UnselectedColor: {r: 0.1764, g: 0.1764, b: 0.1764, a: 1}
   m_ButtonText: Option 3
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &1811433362
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4505,6 +4470,9 @@ MonoBehaviour:
   SelectedColor: {r: 0.1254, g: 0.5882, b: 0.9529, a: 1}
   UnselectedColor: {r: 0.1764, g: 0.1764, b: 0.1764, a: 1}
   m_ButtonText: Option 4
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &1887080826
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4553,6 +4521,9 @@ MonoBehaviour:
   SelectedColor: {r: 0.1254, g: 0.5882, b: 0.9529, a: 1}
   UnselectedColor: {r: 0.1764, g: 0.1764, b: 0.1764, a: 1}
   m_ButtonText: Option 1
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &1988026062
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6097,6 +6068,63 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6866717223981102538}
   m_Mesh: {fileID: 6055364722405236593, guid: 075486cbfeb2d864496c508652b82e35, type: 3}
+--- !u!1001 &6636928551263147711
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3297516331001367575, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
+      propertyPath: m_Name
+      value: Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379513789699534159, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379513789699534159, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379513789699534159, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379513789699534159, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379513789699534159, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379513789699534159, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379513789699534159, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379513789699534159, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379513789699534159, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379513789699534159, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 60a2f27cf9edd484e8eea3519e7d91af, type: 3}
 --- !u!1 &6838968795204121649
 GameObject:
   m_ObjectHideFlags: 0
@@ -6494,10 +6522,10 @@ SceneRoots:
   m_Roots:
   - {fileID: 1532125738}
   - {fileID: 203844589}
-  - {fileID: 339371874}
   - {fileID: 1862971673}
   - {fileID: 2026256748}
   - {fileID: 435606060}
+  - {fileID: 6636928551263147711}
   - {fileID: 1359347118}
   - {fileID: 738470251}
   - {fileID: 543450651868589582}
