@@ -129,6 +129,8 @@ public class PlayerControls : MonoBehaviour
     Vector3 prevPosition;
     float timeSincleLastRun = 0;
 
+    public static bool KickButtonHeld = false;
+
     public static bool KickButtonPressed
     {
         get
@@ -139,7 +141,22 @@ public class PlayerControls : MonoBehaviour
                 string kickInput = PlayerControls.controls["Kick"];
                 if (kickInput.Contains("button"))
                 {
-                    kickButtonPressed = Input.GetButton(kickInput);
+                    if (!KickButtonHeld && Input.GetButton(kickInput))
+                    {
+                        kickButtonPressed = Input.GetButton(kickInput);
+                        if (Input.GetButton(kickInput))
+                        {
+                            KickButtonHeld = true;
+                        }
+                    }
+                    else
+                    {
+                        kickButtonPressed = false;
+                        if (!Input.GetButton(kickInput))
+                        {
+                            KickButtonHeld = false;
+                        }
+                    }
                 }
                 else if (kickInput.Contains("Axis"))
                 {
