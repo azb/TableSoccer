@@ -36,6 +36,8 @@ public class ControllerCalibrationUI : MonoBehaviour
         "Kick"
     };
 
+    public GameObject TopLevelPrefab;
+
     public ProgressBar progressBar;
     public GameObject GreenCheckMark;
 
@@ -228,7 +230,8 @@ public class ControllerCalibrationUI : MonoBehaviour
                             }
                         }
 
-                        Invoke("Hide", 1f);
+                        Destroy(TopLevelPrefab);
+                        //Invoke("Hide", 1f);
                     }
                     else
                     {

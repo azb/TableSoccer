@@ -22,7 +22,7 @@ public class SoccerBall : MonoBehaviour
         if (!PossessingPlayer)
             return;
 
-        transform.position = PossessingPlayer.transform.position + PossessingPlayer.transform.forward * .01f + Vector3.up * .01f;
+        transform.position = PossessingPlayer.transform.position + PossessingPlayer.transform.forward * .01f + Vector3.up * .005f;
 
         if (!PossessingPlayer.IsMine)
             return;
