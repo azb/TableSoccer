@@ -101,7 +101,7 @@ public class PlayerControls : MonoBehaviour
     }
 
 
-    bool kicking;
+    public bool kicking;
 
 
     void DoneKicking()
@@ -168,6 +168,8 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
+    bool canKick = true;
+
     // Update is called once per frame
     void Update()
     {
@@ -199,10 +201,19 @@ public class PlayerControls : MonoBehaviour
             return;
         }
 
-        if (PlayerControls.KickButtonPressed && !kicking)
+        if (PlayerControls.KickButtonPressed)
         {
-            kicking = true;
-            photonView.RPC("Kick",RpcTarget.All);
+            if (!kicking && canKick)
+            {
+                canKick = false;
+                kicking = true;
+                photonView.RPC("Kick", RpcTarget.All);
+            }
+            canKick = false;
+        }
+        else
+        {
+            canKick = true;
         }
 
         float moveX = 0;

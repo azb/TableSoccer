@@ -8,6 +8,9 @@ public class SoccerBall : MonoBehaviour
     PhotonView photonView;
     ResetOnOutOfBounds resetter;
 
+    public AudioClip KickBallSoundEffect;
+    public AudioSource AudioSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,9 +30,6 @@ public class SoccerBall : MonoBehaviour
         if (!PossessingPlayer.IsMine)
             return;
 
-        bool KickButtonPressed = PlayerControls.KickButtonPressed;
-
-
 #if UNITY_ANDROID //Meta Quest Controls
         // Check if the trigger button on the left controller is pressed
         if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
@@ -46,7 +46,7 @@ public class SoccerBall : MonoBehaviour
         }
 #endif
 
-        if (KickButtonPressed)
+        if (PossessingPlayer.GetComponent<PlayerControls>().kicking == true)
         {
             photonView.RPC("KickButtonPressedRPC", RpcTarget.All);
             Debug.Log("Fire button pressed");
@@ -56,10 +56,14 @@ public class SoccerBall : MonoBehaviour
     [PunRPC]
     void KickButtonPressedRPC()
     {
-        Debug.Log("KickButtonPressedRPC");
-        //Kick the ball
-        rb.velocity = PossessingPlayer.transform.forward * .5f + Vector3.up;
-        PossessingPlayer = null;
+        if (PossessingPlayer!=null)
+        {
+            Debug.Log("KickButtonPressedRPC");
+            //Kick the ball
+            rb.velocity = PossessingPlayer.transform.forward * .5f + Vector3.up;
+            PossessingPlayer = null;
+            this.AudioSource.PlayOneShot(this.KickBallSoundEffect);
+        }
     }
 
     [PunRPC]

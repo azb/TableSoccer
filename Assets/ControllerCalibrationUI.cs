@@ -36,6 +36,8 @@ public class ControllerCalibrationUI : MonoBehaviour
         "Kick"
     };
 
+    public Animator GameControllerAnimator;
+
     public GameObject TopLevelPrefab;
 
     public ProgressBar progressBar;
@@ -160,11 +162,12 @@ public class ControllerCalibrationUI : MonoBehaviour
         {
             buttonDefaultValue[i] = Input.GetButton("joystick 1 button " + i);
         }
+
+        EnableTutorialObject();
     }
 
     void CheckForPlayer()
     {
-
         playerControls = FindObjectOfType<PlayerControls>();
         if (playerControls == null)
         {
@@ -174,6 +177,15 @@ public class ControllerCalibrationUI : MonoBehaviour
 
     void EnableTutorialObject()
     {
+        if (tutorialGameObjects[(int)calibrationScreen] == null)
+        {
+            this.GameControllerAnimator.SetBool("Dark",true);
+        }
+        else
+        {
+            this.GameControllerAnimator.SetBool("Dark", false);
+        }
+
         for (int i = 0; i < tutorialGameObjects.Length; i++)
         {
             if (tutorialGameObjects[i] != null)
@@ -182,7 +194,6 @@ public class ControllerCalibrationUI : MonoBehaviour
             }
         }
     }
-
 
     // Update is called once per frame
     void Update()
@@ -237,6 +248,7 @@ public class ControllerCalibrationUI : MonoBehaviour
                     {
                         CalibrateInputPanel.SetActive(true);
                         calibrationScreen++;
+                        EnableTutorialObject();
                     }
 
                 }
