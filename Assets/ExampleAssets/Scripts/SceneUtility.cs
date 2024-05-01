@@ -1,3 +1,4 @@
+#if UNITY_VISIONOS
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.ARFoundation;
@@ -31,3 +32,4 @@ namespace PolySpatial.Template
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_VISIONOS
 using System.Collections.Generic;
 using Unity.XR.CoreUtils;
 using UnityEngine;
@@ -83,3 +84,4 @@ namespace PolySpatial.Template
         }
     }
 }
+#endif

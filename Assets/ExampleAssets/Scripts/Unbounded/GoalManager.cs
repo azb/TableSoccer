@@ -1,3 +1,4 @@
+#if UNITY_VISIONOS
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -333,3 +334,4 @@ namespace PolySpatial.Template
         }
     }
 }
+#endif

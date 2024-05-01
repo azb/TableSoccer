@@ -264,9 +264,9 @@ public class PlayerControls : MonoBehaviour
         {
             lookY *= -1;
         }
-        
 
-#if UNITY_ANDROID //Meta Quest Controls
+
+#if UNITY_ANDROID && META_QUEST //Meta Quest Controls
         // Check for joystick movement on the left controller
         Vector2 leftJoystick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.LTouch);
 

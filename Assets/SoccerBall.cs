@@ -30,7 +30,7 @@ public class SoccerBall : MonoBehaviour
         if (!PossessingPlayer.IsMine)
             return;
 
-#if UNITY_ANDROID //Meta Quest Controls
+#if UNITY_ANDROID && META_QUEST //Meta Quest Controls
         // Check if the trigger button on the left controller is pressed
         if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
         {
