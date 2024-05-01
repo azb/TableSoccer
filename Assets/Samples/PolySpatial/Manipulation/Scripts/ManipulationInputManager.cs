@@ -1,3 +1,4 @@
+#if UNITY_VISIONOS
 using System.Collections.Generic;
 using Unity.PolySpatial.InputDevices;
 using UnityEngine;
@@ -111,3 +112,4 @@ namespace PolySpatial.Samples
         }
     }
 }
+#endif

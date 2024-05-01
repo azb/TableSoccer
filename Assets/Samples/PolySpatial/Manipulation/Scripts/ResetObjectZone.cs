@@ -1,3 +1,4 @@
+#if UNITY_VISIONOS
 using UnityEngine;
 
 namespace PolySpatial.Samples
@@ -20,3 +21,4 @@ namespace PolySpatial.Samples
         }
     }
 }
+#endif
