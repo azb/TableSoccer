@@ -290,11 +290,11 @@ public class PlayerControls : MonoBehaviour
         // Check for joystick movement on the right controller
         Vector2 rightJoystick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
 
-        moveX += leftJoystick.x;
-        moveY += leftJoystick.y;
+        moveX = leftJoystick.x;
+        moveY = leftJoystick.y;
 
-        lookX += rightJoystick.x;
-        lookY += rightJoystick.y;
+        lookY = -rightJoystick.x;
+        lookX = -rightJoystick.y;
 
 #endif
 

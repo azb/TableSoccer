@@ -11,11 +11,15 @@ public class CameraRigSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Gets Here Start method of CameraRigSpawner");
 #if UNITY_EDITOR
+        Debug.Log("Spawning SpectatorCameraRig2D");
         Instantiate(SpectatorCameraRig2D);
 #elif UNITY_VISIONOS
+        Debug.Log("Spawning AppleVisionProCameraRig");
         Instantiate(AppleVisionProCameraRig);
 #elif UNITY_ANDROID
+        Debug.Log("Spawning MetaQuestCameraRig");
         Instantiate(MetaQuestCameraRig);
 #endif
     }
