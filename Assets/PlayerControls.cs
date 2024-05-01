@@ -136,6 +136,23 @@ public class PlayerControls : MonoBehaviour
         get
         {
             bool kickButtonPressed = false;
+
+#if UNITY_ANDROID && META_QUEST //Meta Quest Controls
+            // Check if the trigger button on the left controller is pressed
+            if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
+            {
+                //Debug.Log("Left trigger pressed");
+                return true;
+            }
+
+            // Check if the trigger button on the right controller is pressed
+            if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+            {
+                //Debug.Log("Right trigger pressed");
+                return true;
+            }
+#endif
+
             if (PlayerControls.controls["Kick"] != null)
             {
                 string kickInput = PlayerControls.controls["Kick"];

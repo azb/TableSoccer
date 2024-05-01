@@ -30,22 +30,6 @@ public class SoccerBall : MonoBehaviour
         if (!PossessingPlayer.IsMine)
             return;
 
-#if UNITY_ANDROID && META_QUEST //Meta Quest Controls
-        // Check if the trigger button on the left controller is pressed
-        if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
-        {
-            //Debug.Log("Left trigger pressed");
-            KickButtonPressed = true;
-        }
-
-        // Check if the trigger button on the right controller is pressed
-        if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
-        {
-            //Debug.Log("Right trigger pressed");
-            KickButtonPressed = true;
-        }
-#endif
-
         if (PossessingPlayer.GetComponent<PlayerControls>().kicking == true)
         {
             photonView.RPC("KickButtonPressedRPC", RpcTarget.All);
