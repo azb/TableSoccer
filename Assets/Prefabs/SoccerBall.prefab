@@ -111,7 +111,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PossessingPlayer: {fileID: 0}
   KickBallSoundEffect: {fileID: 8300000, guid: da2e8e1657d6c40cda920116b8d8272b, type: 3}
+  BallHitGoalSoundEffect: {fileID: 8300000, guid: 2bafd05b04bf58d4f881fa1bb17d1706, type: 3}
+  BallHitPlasticWallSoundEffect: {fileID: 8300000, guid: 6afcc3a37b18aa54b88a466774912700, type: 3}
   AudioSource: {fileID: 3653495077721477087}
+  AnnouncerGoal: {fileID: 8300000, guid: 5de03ffd078a97942b14bdb128e3a44c, type: 3}
 --- !u!82 &3653495077721477087
 AudioSource:
   m_ObjectHideFlags: 0
@@ -123,7 +126,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

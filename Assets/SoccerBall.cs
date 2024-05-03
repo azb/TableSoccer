@@ -9,7 +9,11 @@ public class SoccerBall : MonoBehaviour
     ResetOnOutOfBounds resetter;
 
     public AudioClip KickBallSoundEffect;
+    public AudioClip BallHitGoalSoundEffect;
+    public AudioClip BallHitPlasticWallSoundEffect;
     public AudioSource AudioSource;
+
+    public AudioClip AnnouncerGoal;
 
     // Start is called before the first frame update
     void Start()
@@ -60,28 +64,40 @@ public class SoccerBall : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
         if (collision.gameObject.tag == "Player")
         {
-            PossessingPlayer = collision.gameObject.transform.GetComponent<PhotonView>();
-            photonView.RPC("SetPossessingPlayer", RpcTarget.All, PossessingPlayer.ViewID);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PossessingPlayer = collision.gameObject.transform.GetComponent<PhotonView>();
+                photonView.RPC("SetPossessingPlayer", RpcTarget.All, PossessingPlayer.ViewID);
+            }
+        }
+
+        if (collision.gameObject.tag == "PlasticWall")
+        {
+            this.AudioSource.PlayOneShot(this.BallHitPlasticWallSoundEffect);
         }
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
         if (collision.gameObject.tag == "Goal")
         {
+            this.AudioSource.PlayOneShot(this.BallHitGoalSoundEffect);
+            Invoke("PlayAnnouncerGoalSound",.5f);
             Debug.Log("GOAL!!!!!!");
             Goal goal = collision.gameObject.transform.GetComponent<Goal>();
             goal.OnGoal();
-            photonView.RPC("ResetBall", RpcTarget.All);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                photonView.RPC("ResetBall", RpcTarget.All);
+            }
         }
+    }
+
+    void PlayAnnouncerGoalSound()
+    {
+        this.AudioSource.PlayOneShot(this.AnnouncerGoal);
     }
 
     [PunRPC]

@@ -15,6 +15,12 @@ public class PlayerControls : MonoBehaviour
 
     PhotonView photonView;
 
+    public AudioSource audioSource;
+    public AudioClip RunningOnGrass;
+
+    [Range (0,1)]
+    public float moveSoundEffectVolume = .5f;
+
     //QUEST
     public string MoveXAxisQuest = "JoystickAxis1";
     public string MoveYAxisQuest = "JoystickAxis2";
@@ -284,22 +290,31 @@ public class PlayerControls : MonoBehaviour
 
 
 #if UNITY_ANDROID && META_QUEST //Meta Quest Controls
-        // Check for joystick movement on the left controller
-        Vector2 leftJoystick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.LTouch);
+        
+        if (UnityEngine.XR.XRSettings.isDeviceActive)
+        {
+            // Check for joystick movement on the left controller
+            Vector2 leftJoystick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.LTouch);
 
-        // Check for joystick movement on the right controller
-        Vector2 rightJoystick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
+            // Check for joystick movement on the right controller
+            Vector2 rightJoystick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
 
-        moveX = leftJoystick.x;
-        moveY = leftJoystick.y;
+            moveX = leftJoystick.x;
+            moveY = leftJoystick.y;
 
-        lookY = -rightJoystick.x;
-        lookX = -rightJoystick.y;
-
+            lookY = -rightJoystick.x;
+            lookX = -rightJoystick.y;
+        }    
 #endif
 
         if (Mathf.Abs(moveX) + Mathf.Abs(moveY) > .2f)
         {
+            audioSource.volume = Mathf.Clamp( 
+                Mathf.Sqrt(moveX * moveX + moveY * moveY) , 
+                0 , 
+                1
+            ) * moveSoundEffectVolume;
+
             running = true;
 
             transform.position += new Vector3(
@@ -320,6 +335,7 @@ public class PlayerControls : MonoBehaviour
         }
         else
         {
+            audioSource.volume = 0;
             running = false;
         }
 

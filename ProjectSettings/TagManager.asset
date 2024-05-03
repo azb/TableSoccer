@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Projectile
   - Goal
+  - PlasticWall
+  - Bleachers
+  - MetalPole
   layers:
   - Default
   - TransparentFX

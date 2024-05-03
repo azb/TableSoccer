@@ -390,6 +390,8 @@ MonoBehaviour:
   standModel: {fileID: 2645203532017895638}
   MoveSpeed: 0.1
   AimArrow: {fileID: 2270951954939414873}
+  audioSource: {fileID: 4430704423397727311}
+  RunningOnGrass: {fileID: 0}
   MoveXAxisQuest: JoystickAxis1
   MoveYAxisQuest: JoystickAxis2
   LookXAxisQuest: JoystickAxis3
@@ -563,11 +565,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a2cd606564fd5e44090217ec89cccfea, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
