@@ -392,6 +392,7 @@ MonoBehaviour:
   AimArrow: {fileID: 2270951954939414873}
   audioSource: {fileID: 4430704423397727311}
   RunningOnGrass: {fileID: 0}
+  moveSoundEffectVolume: 0.5
   MoveXAxisQuest: JoystickAxis1
   MoveYAxisQuest: JoystickAxis2
   LookXAxisQuest: JoystickAxis3
