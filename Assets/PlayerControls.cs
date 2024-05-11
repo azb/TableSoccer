@@ -317,12 +317,27 @@ public class PlayerControls : MonoBehaviour
 
             running = true;
 
-            transform.position += new Vector3(
+            Vector3 moveVector = new Vector3(
                 moveX,
                 0,
                 moveY
                 )
                 * Time.deltaTime * MoveSpeed;
+
+#if UNITY_ANDROID && META_QUEST //Meta Quest Controls
+            float angle = Camera.main.transform.rotation.eulerAngles.y;
+#else
+            float angle = 0;
+#endif
+
+            // Create a quaternion rotation
+            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
+
+            // Rotate the vector using quaternion multiplication
+            Vector3 rotatedVector = rotation * moveVector;
+
+
+            transform.position += rotatedVector;
 
             // If not aiming with aim thumbstick,
             // set the direction to movement direction
