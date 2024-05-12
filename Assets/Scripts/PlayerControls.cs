@@ -346,7 +346,7 @@ public class PlayerControls : MonoBehaviour
             {
                 float direction = -Mathf.Atan2(moveY, moveX) * Mathf.Rad2Deg - 90f;
 
-                transform.rotation = Quaternion.Euler(0, direction + 180, 0);
+                transform.rotation = Quaternion.Euler(0, direction + 180 + angle, 0);
             }
         }
         else
