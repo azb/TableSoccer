@@ -402,8 +402,20 @@ PrefabInstance:
       value: -0.123
       objectReference: {fileID: 0}
     - target: {fileID: 1522140418165599971, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_Intensity
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1522140418165599971, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
       propertyPath: m_Lightmapping
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1522140418165599971, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1522140418165599971, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_Shadows.m_Strength
+      value: 0.333
       objectReference: {fileID: 0}
     - target: {fileID: 1736477157947879504, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
       propertyPath: m_IsActive
@@ -416,6 +428,10 @@ PrefabInstance:
     - target: {fileID: 2584855220298255398, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
       propertyPath: m_Name
       value: soccer_scene_v2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2807160247660246091, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: sceneViewId
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2988355804792768702, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
       propertyPath: m_LocalScale.x
@@ -545,6 +561,38 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PlasticWall
       objectReference: {fileID: 0}
+    - target: {fileID: 8102408066372164669, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.77267057
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102408066372164669, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.5796491
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102408066372164669, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.2070364
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102408066372164669, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.15531647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102408066372164669, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 73.754
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102408066372164669, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102408066372164669, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8333779670059039425, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8835590613277246558, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
       propertyPath: goalAnimation
       value: 
@@ -613,10 +661,10 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1252062710}
     - targetCorrespondingSourceObject: {fileID: 3717086740208182729, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
-      insertIndex: -1
+      insertIndex: 5
       addedObject: {fileID: 1637699367}
     - targetCorrespondingSourceObject: {fileID: 9064321958398083616, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
-      insertIndex: -1
+      insertIndex: 5
       addedObject: {fileID: 722402834}
   m_SourcePrefab: {fileID: 100100000, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
 --- !u!1 &114263575 stripped
