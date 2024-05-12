@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Scoreboard : MonoBehaviour
 {
-    public TextMeshProUGUI Team1ScoreLabel;
-    public TextMeshProUGUI Team2ScoreLabel;
+    public TextMeshProUGUI[] Team1ScoreLabel;
+    public TextMeshProUGUI[] Team2ScoreLabel;
 
     public int Team1Score;
     public int Team2Score;
@@ -37,13 +37,19 @@ public class Scoreboard : MonoBehaviour
     void SetTeam1Score(int newScore)
     {
         Team1Score = newScore;
-        Team1ScoreLabel.text = "" + newScore;
+        for (int i = 0; i < Team1ScoreLabel.Length; i++)
+        {
+            Team1ScoreLabel[i].text = "" + newScore;
+        }
     }
 
     [PunRPC]
     void SetTeam2Score(int newScore)
     {
         Team2Score = newScore;
-        Team2ScoreLabel.text = "" + newScore;
+        for (int i = 0; i < Team2ScoreLabel.Length; i++)
+        {
+            Team2ScoreLabel[i].text = "" + newScore;
+        }
     }
 }
