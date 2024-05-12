@@ -324,7 +324,7 @@ public class PlayerControls : MonoBehaviour
                 )
                 * Time.deltaTime * MoveSpeed;
 
-#if UNITY_ANDROID && META_QUEST //Meta Quest Controls
+#if (UNITY_ANDROID && META_QUEST) || UNITY_EDITOR //Meta Quest Controls
             float angle = Camera.main.transform.rotation.eulerAngles.y;
             Debug.Log("angle = "+angle);
 #else
