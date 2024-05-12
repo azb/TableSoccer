@@ -14,7 +14,13 @@ public class LookAtMainCamera : MonoBehaviour
         if (mainCamera == null)
         {
             //Debug.LogError("Main camera not found in the scene!");
+            Invoke("CheckForCamera", 1f);
         }
+    }
+
+    void CheckForCamera()
+    {
+        mainCamera = Camera.main;
     }
 
     void Update()
