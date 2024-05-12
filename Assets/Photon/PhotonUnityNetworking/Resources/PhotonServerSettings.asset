@@ -52,6 +52,9 @@ MonoBehaviour:
   - Kick
   - ResetBall
   - ShowGoalAnimation
+  - PlayAnnouncerGoalSoundRPC
+  - SetTeam1Score
+  - SetTeam2Score
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

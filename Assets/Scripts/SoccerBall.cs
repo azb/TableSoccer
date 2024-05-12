@@ -84,18 +84,24 @@ public class SoccerBall : MonoBehaviour
         if (collision.gameObject.tag == "Goal")
         {
             this.AudioSource.PlayOneShot(this.BallHitGoalSoundEffect);
-            Invoke("PlayAnnouncerGoalSound",.5f);
-            Debug.Log("GOAL!!!!!!");
-            Goal goal = collision.gameObject.transform.GetComponent<Goal>();
-            goal.OnGoal();
             if (PhotonNetwork.IsMasterClient)
             {
+                Invoke("PlayAnnouncerGoalSound", .5f);
                 photonView.RPC("ResetBall", RpcTarget.All);
+                Debug.Log("GOAL!!!!!!");
+                Goal goal = collision.gameObject.transform.GetComponent<Goal>();
+                goal.OnGoal();
             }
         }
     }
 
     void PlayAnnouncerGoalSound()
+    {
+        photonView.RPC("PlayAnnouncerGoalSoundRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void PlayAnnouncerGoalSoundRPC()
     {
         this.AudioSource.PlayOneShot(this.AnnouncerGoal);
     }
