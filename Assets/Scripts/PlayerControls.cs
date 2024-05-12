@@ -95,7 +95,7 @@ public class PlayerControls : MonoBehaviour
 
         for(int i = 0 ; i < body.Length ; i++)
         {
-            body[i].material = this.teamColorMaterials[ photonView.OwnerActorNr ];
+            body[i].material = this.teamColorMaterials[ (photonView.OwnerActorNr-1) % 2 ];
         }
     }
 
