@@ -4,20 +4,6 @@ using UnityEngine;
 
 public class LookAtMainCamera : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }using UnityEngine;
-
-public class LookAtMainCamera : MonoBehaviour
-{
     private Camera mainCamera;
 
     void Start()
@@ -27,7 +13,7 @@ public class LookAtMainCamera : MonoBehaviour
 
         if (mainCamera == null)
         {
-            Debug.LogError("Main camera not found in the scene!");
+            //Debug.LogError("Main camera not found in the scene!");
         }
     }
 
