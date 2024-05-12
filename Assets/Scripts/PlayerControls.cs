@@ -326,6 +326,7 @@ public class PlayerControls : MonoBehaviour
 
 #if UNITY_ANDROID && META_QUEST //Meta Quest Controls
             float angle = Camera.main.transform.rotation.eulerAngles.y;
+            Debug.Log("angle = "+angle);
 #else
             float angle = 0;
 #endif
