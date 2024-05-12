@@ -393,6 +393,14 @@ MonoBehaviour:
   audioSource: {fileID: 4430704423397727311}
   RunningOnGrass: {fileID: 0}
   moveSoundEffectVolume: 0.1
+  teamColorMaterials:
+  - {fileID: 2100000, guid: 9b38fe49af2623e448c37f0081ff70e9, type: 2}
+  - {fileID: 2100000, guid: 95041856b6877444db3425d64a017d16, type: 2}
+  body:
+  - {fileID: 6715049538894417723}
+  - {fileID: 6979590419680097611}
+  - {fileID: 1523234468424824674}
+  - {fileID: 7902880971128457643}
   MoveXAxisQuest: JoystickAxis1
   MoveYAxisQuest: JoystickAxis2
   LookXAxisQuest: JoystickAxis3
@@ -761,9 +769,19 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!23 &1523234468424824674 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1402602267661555774, guid: 60128f0552fe94810a8998711b02baa0, type: 3}
+  m_PrefabInstance: {fileID: 456155460559990620}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6476146774371122505 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2338648224389737963, guid: 60128f0552fe94810a8998711b02baa0, type: 3}
+  m_PrefabInstance: {fileID: 456155460559990620}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7902880971128457643 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1443339194737481993, guid: 60128f0552fe94810a8998711b02baa0, type: 3}
   m_PrefabInstance: {fileID: 456155460559990620}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8214675643589344864 stripped
@@ -920,6 +938,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3776292df65df4d4a8d1df4d8945a6dd, type: 3}
   m_PrefabInstance: {fileID: 1556018077487304695}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &6979590419680097611 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8449996119470504636, guid: 3776292df65df4d4a8d1df4d8945a6dd, type: 3}
+  m_PrefabInstance: {fileID: 1556018077487304695}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2915182771532215687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1015,5 +1038,10 @@ Animation:
 --- !u!4 &3458331531426746988 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8eda07f1c3e49424fa3fed64eacf8ae6, type: 3}
+  m_PrefabInstance: {fileID: 2915182771532215687}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6715049538894417723 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8449996119470504636, guid: 8eda07f1c3e49424fa3fed64eacf8ae6, type: 3}
   m_PrefabInstance: {fileID: 2915182771532215687}
   m_PrefabAsset: {fileID: 0}

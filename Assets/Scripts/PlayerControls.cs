@@ -21,6 +21,10 @@ public class PlayerControls : MonoBehaviour
     [Range (0,1)]
     public float moveSoundEffectVolume = .5f;
 
+    public Material[] teamColorMaterials;
+
+    public MeshRenderer[] body;
+
     //QUEST
     public string MoveXAxisQuest = "JoystickAxis1";
     public string MoveYAxisQuest = "JoystickAxis2";
@@ -88,6 +92,11 @@ public class PlayerControls : MonoBehaviour
     {
         photonView = GetComponent<PhotonView>();
         Invoke("SwitchSide",.2f);
+
+        for(int i = 0 ; i < body.Length ; i++)
+        {
+            body[i].material = this.teamColorMaterials[ photonView.OwnerActorNr ];
+        }
     }
 
     int side = 1;
