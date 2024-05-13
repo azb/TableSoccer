@@ -109,6 +109,7 @@ public class SoccerBall : MonoBehaviour
     [PunRPC]
     void ResetBall()
     {
+        PossessingPlayer = null;
         resetter.ResetPosition();
     }
 }
