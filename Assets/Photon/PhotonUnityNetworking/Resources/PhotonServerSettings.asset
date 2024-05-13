@@ -55,6 +55,8 @@ MonoBehaviour:
   - PlayAnnouncerGoalSoundRPC
   - SetTeam1Score
   - SetTeam2Score
+  - CheckForAnchorsShared
+  - SendSessionStart
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
