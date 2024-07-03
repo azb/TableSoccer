@@ -42,11 +42,13 @@ public class PlatformSwitcherWindow : EditorWindow
             {
                 Debug.Log("Switching to VisionOS platform...");
                 SwitchPlatform("manifest_visionos.json");
+                CompileSymbols.Remove("META_QUEST");
             }
             else if (isMetaQuest)
             {
                 Debug.Log("Switching to Meta Quest platform...");
                 SwitchPlatform("manifest_metaquest.json");
+                CompileSymbols.Add("META_QUEST");
             }
         }
     }
