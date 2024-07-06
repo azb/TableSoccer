@@ -91,6 +91,7 @@ public class SoccerBall : MonoBehaviour
                 Debug.Log("GOAL!!!!!!");
                 Goal goal = collision.gameObject.transform.GetComponent<Goal>();
                 goal.OnGoal();
+                SoccerGame.Instance.gameState = SoccerGame.GameState.Goal;
             }
         }
     }
@@ -111,5 +112,12 @@ public class SoccerBall : MonoBehaviour
     {
         PossessingPlayer = null;
         resetter.ResetPosition();
+        Invoke("StartPlaying", 5f);
     }
+
+    void StartPlaying()
+    {
+        SoccerGame.Instance.gameState = SoccerGame.GameState.Playing;
+    }
+
 }

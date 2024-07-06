@@ -4,13 +4,55 @@ using UnityEngine;
 
 public class SoccerGame : MonoBehaviour
 {
-    public enum GameState { WaitingForPlayers, Playing, BallOutOfBounds, ThrowingFromBounds, Foul, PenaltyKick, GameOver };
-    public GameState gameState = GameState.WaitingForPlayers;
+    public enum GameState { WaitingForPlayers, Playing, Goal, BallOutOfBounds, ThrowingFromBounds, Foul, PenaltyKick, GameOver };
+
+    public GameState gameState = GameState.Playing;
+
     public static SoccerGame Instance;
-    
+
+    public PlayerControls[] soccerPlayers;
+    public Transform soccerBall;
+
+    public PlayerControls closestTeam1Player;
+    public PlayerControls closestTeam2Player;
+
+    public Transform team1Goal;
+    public Transform team2Goal;
+
+    public enum SoccerBallPosition { Team1Side, Midfield, Team2Side }
+    public SoccerBallPosition soccerBallPosition = SoccerBallPosition.Midfield;
+
     void Start()
     {
         Instance = this;
+        soccerPlayers = FindObjectsOfType<PlayerControls>();
+        Invoke("UpdateClosestPlayer", .2f);
+    }
+
+    private void Update()
+    {
+        float ballDistanceToCenter = Vector3.Distance(soccerBall.position, transform.position);
+        float ballDistanceToTeam1Goal = Vector3.Distance(soccerBall.position, team1Goal.position);
+        float ballDistanceToTeam2Goal = Vector3.Distance(soccerBall.position, team2Goal.position);
+
+        if (ballDistanceToCenter < ballDistanceToTeam1Goal)
+        {
+            if (ballDistanceToCenter < ballDistanceToTeam2Goal)
+            {
+                //Ball is mid field
+                soccerBallPosition = SoccerBallPosition.Midfield;
+            }
+            else
+            {
+                //Ball is near team 2 goal
+                soccerBallPosition = SoccerBallPosition.Team2Side;
+            }
+        }
+        else
+        {
+            //Ball is near team 1 goal
+            soccerBallPosition = SoccerBallPosition.Team1Side;
+        }
     }
 
     public static GameState GetState()
@@ -21,5 +63,42 @@ public class SoccerGame : MonoBehaviour
     public static GameState SetState(GameState gameState)
     {
         return Instance.gameState = gameState;
+    }
+
+    private void UpdateClosestPlayer()
+    {
+        float closestTeam1Distance = float.MaxValue;
+        float closestTeam2Distance = float.MaxValue;
+        int closestTeam1Index = 0;
+        int closestTeam2Index = 0;
+
+        for (int i = 0; i < soccerPlayers.Length; i++)
+        {
+            float distance = Vector3.Distance(soccerPlayers[i].transform.position, soccerBall.position);
+
+            if (soccerPlayers[i].teamID == PlayerControls.TeamID.Team1)
+            {
+                //if team 1
+                if (distance < closestTeam1Distance)
+                {
+                    closestTeam1Distance = distance;
+                    closestTeam1Index = i;
+                }
+            }
+            else
+            {
+                //if team 2
+                if (distance < closestTeam2Distance)
+                {
+                    closestTeam2Distance = distance;
+                    closestTeam2Index = i;
+                }
+            }
+        }
+
+        closestTeam1Player = soccerPlayers[closestTeam1Index];
+        closestTeam2Player = soccerPlayers[closestTeam2Index];
+
+        Invoke("UpdateClosestPlayer", .2f);
     }
 }

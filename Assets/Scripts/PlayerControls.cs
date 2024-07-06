@@ -4,10 +4,16 @@ using System.Collections.Generic;
 
 public class PlayerControls : MonoBehaviour
 {
+    public TeamID teamID;
+    public enum TeamID { Team1 = 0, Team2 = 1 };
+
     public GameObject kickModel;
     public GameObject runModel1;
     public GameObject runModel2;
     public GameObject standModel;
+
+    public enum PlayerPosition { Goalie, Defense, Offense };
+    public PlayerPosition playerPosition;
 
     public float MoveSpeed = .1f;
 
@@ -18,12 +24,14 @@ public class PlayerControls : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip RunningOnGrass;
 
-    [Range (0,1)]
+    [Range(0, 1)]
     public float moveSoundEffectVolume = .5f;
 
     public Material[] teamColorMaterials;
 
     public MeshRenderer[] body;
+
+    float zoffset = 0;
 
     //QUEST
     public string MoveXAxisQuest = "JoystickAxis1";
@@ -64,6 +72,8 @@ public class PlayerControls : MonoBehaviour
 
     private void Awake()
     {
+        Invoke("ChooseNewZoffset", Random.value * 2f + .1f);
+
         if (controls.ContainsKey("MoveX"))
             return;
         controls.Add("MoveX", "JoystickAxis1");
@@ -83,20 +93,30 @@ public class PlayerControls : MonoBehaviour
         neutralValue.Add("AimX", 0);
         neutralValue.Add("AimY", 0);
         neutralValue.Add("Kick", 0);
+
+    }
+
+    void ChooseNewZoffset()
+    {
+        zoffset = Random.value * .1f;
+        Invoke("ChooseNewZoffset", Random.value * 2f + .1f);
     }
 
     public string KickButton = "joystick 1 button 1";
 
+    Vector3 startPos;
+
     // Start is called before the first frame update
     void Start()
     {
+        startPos = transform.position;
         photonView = GetComponent<PhotonView>();
-        Invoke("SwitchSide",.2f);
-
+        Invoke("SwitchSide", .2f);
+        /*
         for(int i = 0 ; i < body.Length ; i++)
         {
             body[i].material = this.teamColorMaterials[ (photonView.OwnerActorNr-1) % 2 ];
-        }
+        }*/
     }
 
     int side = 1;
@@ -205,6 +225,15 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool isHuman = true;
+
+        if (SoccerGame.Instance.closestTeam1Player != this && this.teamID == TeamID.Team1)
+            isHuman = false;
+        if (SoccerGame.Instance.closestTeam2Player != this && this.teamID == TeamID.Team2)
+            isHuman = false;
+        if (photonView.OwnerActorNr != (int)this.teamID)
+            isHuman = false;
+
         if (!kicking)
         {
             this.kickModel.SetActive(false);
@@ -215,7 +244,7 @@ public class PlayerControls : MonoBehaviour
 
         if (!photonView.IsMine)
         {
-            if (Vector3.Distance(transform.position , prevPosition) > 0)
+            if (Vector3.Distance(transform.position, prevPosition) > 0)
             {
                 prevPosition = transform.position;
                 running = true;
@@ -233,69 +262,74 @@ public class PlayerControls : MonoBehaviour
             return;
         }
 
-        if (PlayerControls.KickButtonPressed)
-        {
-            if (!kicking && canKick)
-            {
-                canKick = false;
-                kicking = true;
-                photonView.RPC("Kick", RpcTarget.All);
-            }
-            canKick = false;
-        }
-        else
-        {
-            canKick = true;
-        }
-
         float moveX = 0;
         float moveY = 0;
         float lookX = 0;
         float lookY = 0;
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (isHuman && SoccerGame.Instance.gameState == SoccerGame.GameState.Playing)
         {
-            moveX -= 1;
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            moveX += 1;
-        }
+            //Human player controls
 
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            moveY += 1;
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            moveY -= 1;
-        }
+            if (PlayerControls.KickButtonPressed)
+            {
+                if (!kicking && canKick)
+                {
+                    canKick = false;
+                    kicking = true;
+                    photonView.RPC("Kick", RpcTarget.All);
+                }
+                canKick = false;
+            }
+            else
+            {
+                canKick = true;
+            }
 
-        moveX -= Input.GetAxis(controls["MoveX"]);
-        moveY += Input.GetAxis(controls["MoveY"]);
-        
-        if (invertControls["MoveX"])
-        {
-            moveX *= -1;
-        }
 
-        if (invertControls["MoveY"])
-        {
-            moveY *= -1;
-        }
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                moveX -= 1;
+            }
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                moveX += 1;
+            }
 
-        lookX += Input.GetAxis(controls["AimX"]);
-        lookY += Input.GetAxis(controls["AimY"]);
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                moveY += 1;
+            }
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                moveY -= 1;
+            }
 
-        if (invertControls["AimX"])
-        {
-            lookX *= -1;
-        }
+            moveX -= Input.GetAxis(controls["MoveX"]);
+            moveY += Input.GetAxis(controls["MoveY"]);
 
-        if (invertControls["AimY"])
-        {
-            lookY *= -1;
-        }
+            if (invertControls["MoveX"])
+            {
+                moveX *= -1;
+            }
+
+            if (invertControls["MoveY"])
+            {
+                moveY *= -1;
+            }
+
+            lookX += Input.GetAxis(controls["AimX"]);
+            lookY += Input.GetAxis(controls["AimY"]);
+
+            if (invertControls["AimX"])
+            {
+                lookX *= -1;
+            }
+
+            if (invertControls["AimY"])
+            {
+                lookY *= -1;
+            }
 
 
 #if UNITY_ANDROID && META_QUEST //Meta Quest Controls
@@ -315,12 +349,79 @@ public class PlayerControls : MonoBehaviour
             lookX = -rightJoystick.y;
         }    
 #endif
+            Debug.Log("distance from start = " + Vector3.Distance(transform.position, startPos));
+        }
+        else
+        {
+            float distanceFromStartX = Mathf.Abs(transform.position.x - startPos.x);
+
+            if (distanceFromStartX > .01f)
+            {
+                if (transform.position.x > startPos.x)
+                {
+                    moveX = -1;
+                }
+
+                if (transform.position.x < startPos.x)
+                {
+                    moveX = 1;
+                }
+            }
+
+            float targetZ = startPos.z;
+
+            if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
+                && this.teamID == TeamID.Team1
+                && this.playerPosition == PlayerPosition.Defense)
+            {
+                targetZ = SoccerGame.Instance.soccerBall.position.z + zoffset;
+            }
+
+            if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
+                && this.teamID == TeamID.Team2
+                && this.playerPosition == PlayerPosition.Defense)
+            {
+                targetZ = SoccerGame.Instance.soccerBall.position.z + zoffset;
+            }
+
+            if ((SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
+                || SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Midfield)
+                && this.teamID == TeamID.Team1
+                && this.playerPosition == PlayerPosition.Offense)
+            {
+                targetZ = SoccerGame.Instance.soccerBall.position.z + zoffset;
+            }
+
+            if ((SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
+                || SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Midfield)
+                && this.teamID == TeamID.Team2
+                && this.playerPosition == PlayerPosition.Offense)
+            {
+                targetZ = SoccerGame.Instance.soccerBall.position.z + zoffset;
+            }
+
+            float distanceFromTargetZ = Mathf.Abs(transform.position.z - targetZ);
+            if (distanceFromTargetZ > .01f)
+                {
+                    if (transform.position.z > targetZ)
+                    {
+                        moveY = -1;
+                    }
+
+                    if (transform.position.z < targetZ)
+                    {
+                        moveY = 1;
+                    }
+                }
+            
+        }
+
 
         if (Mathf.Abs(moveX) + Mathf.Abs(moveY) > .2f)
         {
-            audioSource.volume = Mathf.Clamp( 
-                Mathf.Sqrt(moveX * moveX + moveY * moveY) , 
-                0 , 
+            audioSource.volume = Mathf.Clamp(
+                Mathf.Sqrt(moveX * moveX + moveY * moveY),
+                0,
                 1
             ) * moveSoundEffectVolume;
 
@@ -335,7 +436,7 @@ public class PlayerControls : MonoBehaviour
 
 #if (UNITY_ANDROID && META_QUEST) || UNITY_EDITOR //Meta Quest Controls
             float angle = Camera.main.transform.rotation.eulerAngles.y;
-            Debug.Log("angle = "+angle);
+            //Debug.Log("angle = "+angle);
 #else
             float angle = 0;
 #endif
@@ -380,7 +481,7 @@ public class PlayerControls : MonoBehaviour
         {
             AimArrow.SetActive(false);
         }
-        
+
         float x = transform.position.x;
         float y = transform.position.y;
         float z = transform.position.z;
