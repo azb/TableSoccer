@@ -63,18 +63,32 @@ public class SoccerBall : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                PossessingPlayer = collision.gameObject.transform.GetComponent<PhotonView>();
-                photonView.RPC("SetPossessingPlayer", RpcTarget.All, PossessingPlayer.ViewID);
-            }
-        }
+        CheckForRepossession(collision);
 
         if (collision.gameObject.tag == "PlasticWall")
         {
             this.AudioSource.PlayOneShot(this.BallHitPlasticWallSoundEffect);
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        CheckForRepossession(collision);
+    }
+
+    void CheckForRepossession(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            float radius = .02f;
+            if (Vector3.Distance(transform.position, collision.transform.position + collision.transform.forward * radius / 2f) < radius)
+            {
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    PossessingPlayer = collision.gameObject.transform.GetComponent<PhotonView>();
+                    photonView.RPC("SetPossessingPlayer", RpcTarget.All, PossessingPlayer.ViewID);
+                }
+            }
         }
     }
 
