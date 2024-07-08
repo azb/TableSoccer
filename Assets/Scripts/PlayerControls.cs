@@ -5,6 +5,9 @@ using static SoccerGame;
 
 public class PlayerControls : MonoBehaviour
 {
+    public float AISpeedScalar = .75f;
+    public float AIKickDelay = .5f;
+
     public TeamID teamID;
 
     public GameObject kickModel;
@@ -69,6 +72,8 @@ public class PlayerControls : MonoBehaviour
     public static Dictionary<string, string> controls = new Dictionary<string, string>();
     public static Dictionary<string, bool> invertControls = new Dictionary<string, bool>();
     public static Dictionary<string, float> neutralValue = new Dictionary<string, float>();
+
+    float possessionTime;
 
     private void Awake()
     {
@@ -255,6 +260,16 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (SoccerGame.PossessingPlayer == this)
+        {
+            possessionTime += Time.deltaTime;
+        }
+        else
+        {
+            possessionTime = 0;
+        }
+
+
         isHuman = true;
         if (SoccerGame.Instance.closestTeam1Player != this && this.teamID == TeamID.Team1)
             isHuman = false;
@@ -422,7 +437,10 @@ public class PlayerControls : MonoBehaviour
                     if (Mathf.Abs(targetZ - centerZ) < .02f)
                     {
                         //kick the ball
-                        this.DoKick();
+                        if (possessionTime > AIKickDelay)
+                        {
+                            this.DoKick();
+                        }
                     }
                 }
 
@@ -439,7 +457,10 @@ public class PlayerControls : MonoBehaviour
                     {
                         Debug.Log("Should be kicking the ball");
                         //kick the ball
-                        this.DoKick();
+                        if (possessionTime > AIKickDelay)
+                        {
+                            this.DoKick();
+                        }
                     }
                     else
                     {
@@ -459,7 +480,10 @@ public class PlayerControls : MonoBehaviour
                     if (Vector3.Distance(transform.position, new Vector3(targetX, transform.position.y, targetZ)) < .25f)
                     {
                         Debug.Log("In range so should be kicking!");
-                        DoKick();
+                        if (possessionTime > AIKickDelay)
+                        {
+                            DoKick();
+                        }
                     }
                 }
 
@@ -475,7 +499,10 @@ public class PlayerControls : MonoBehaviour
                     if (Vector3.Distance(transform.position, new Vector3(targetX, transform.position.y, targetZ)) < .25f)
                     {
                         Debug.Log("In range so should be kicking!");
-                        DoKick();
+                        if (possessionTime > AIKickDelay)
+                        {
+                            DoKick();
+                        }
                     }
                 }
             }
@@ -570,6 +597,12 @@ public class PlayerControls : MonoBehaviour
                     moveY = 1;
                 }
             }
+        }
+
+        if (!isHuman)
+        {
+            moveX *= AISpeedScalar;
+            moveY *= AISpeedScalar;
         }
 
         if (Mathf.Abs(moveX) + Mathf.Abs(moveY) > .2f)
