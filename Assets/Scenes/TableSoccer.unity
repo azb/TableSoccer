@@ -594,6 +594,10 @@ PrefabInstance:
       value: PlasticWall
       objectReference: {fileID: 0}
     - target: {fileID: 5147390579074927556, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.012962
+      objectReference: {fileID: 0}
+    - target: {fileID: 5147390579074927556, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.05
       objectReference: {fileID: 0}
@@ -616,6 +620,10 @@ PrefabInstance:
     - target: {fileID: 6357475131556234615, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6510996393250030614, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_Radius
+      value: 0.004
       objectReference: {fileID: 0}
     - target: {fileID: 6511518016495251506, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
       propertyPath: m_LocalPosition.y
@@ -692,6 +700,10 @@ PrefabInstance:
     - target: {fileID: 8835590613277246558, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
       propertyPath: goalAction.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8926925730062567966, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+      propertyPath: m_TagString
+      value: SoccerBall
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9020148242518630297, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
@@ -2149,6 +2161,10 @@ PrefabInstance:
       propertyPath: teamID
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4688045721521578745, guid: e607294734fd9344781589f2c354bb10, type: 3}
+      propertyPath: playerPosition
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0018545911
@@ -2319,11 +2335,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 508803983}
   m_CullTransparentMesh: 1
---- !u!4 &561386204 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2240050064230719862, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
-  m_PrefabInstance: {fileID: 93039647}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &566147941 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2075987594797440041, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
@@ -2875,6 +2886,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4688045721521578745, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: playerPosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688045721521578745, guid: e607294734fd9344781589f2c354bb10, type: 3}
+      propertyPath: InvertMoveXQuest
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
@@ -3783,6 +3798,10 @@ PrefabInstance:
       propertyPath: teamID
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4688045721521578745, guid: e607294734fd9344781589f2c354bb10, type: 3}
+      propertyPath: playerPosition
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0562391
@@ -3839,6 +3858,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Team2 Midfielder
       objectReference: {fileID: 0}
+    - target: {fileID: 8115851597211747277, guid: e607294734fd9344781589f2c354bb10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3849,6 +3872,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
   m_PrefabInstance: {fileID: 825092101}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &885491379 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3274047387564027932, guid: 030396b8a11ca4f03af63a4ede6e3e74, type: 3}
+  m_PrefabInstance: {fileID: 93039647}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9291f075808f0874d82e4f95bf16a60c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &965660784
 GameObject:
   m_ObjectHideFlags: 0
@@ -4163,9 +4197,13 @@ PrefabInstance:
       propertyPath: teamID
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4688045721521578745, guid: e607294734fd9344781589f2c354bb10, type: 3}
+      propertyPath: playerPosition
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.044396453
+      value: 0.0021
       objectReference: {fileID: 0}
     - target: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4173,7 +4211,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.17013162
+      value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4217,7 +4255,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 9b38fe49af2623e448c37f0081ff70e9, type: 2}
     - target: {fileID: 8115851597211747277, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: m_Name
-      value: Team2
+      value: Team2 Midfielder
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4647,6 +4685,111 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1052584765}
   m_CullTransparentMesh: 1
+--- !u!1 &1085283373
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1085283377}
+  - component: {fileID: 1085283376}
+  - component: {fileID: 1085283375}
+  - component: {fileID: 1085283374}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!65 &1085283374
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085283373}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1085283375
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085283373}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1085283376
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085283373}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1085283377
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085283373}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.0023, y: 0.0016799951, z: -0.3098}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1108501544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5362,6 +5505,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4688045721521578745, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: teamID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688045721521578745, guid: e607294734fd9344781589f2c354bb10, type: 3}
+      propertyPath: playerPosition
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
@@ -6430,7 +6577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0448
+      value: 0.009
       objectReference: {fileID: 0}
     - target: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6628,6 +6775,98 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368517789}
   m_CullTransparentMesh: 1
+--- !u!1 &1370264770
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1370264771}
+  - component: {fileID: 1370264773}
+  - component: {fileID: 1370264772}
+  - component: {fileID: 1370264774}
+  m_Layer: 5
+  m_Name: Text (Legacy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1370264771
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370264770}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1735691336}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 25, y: -25}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0, y: 1}
+--- !u!114 &1370264772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370264770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 80
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 8
+    m_MaxSize: 80
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: GAME STATE
+--- !u!222 &1370264773
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370264770}
+  m_CullTransparentMesh: 1
+--- !u!114 &1370264774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370264770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fdcb1d3f70802478938cd6249c823e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1372992291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7711,6 +7950,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Team1 Midfielder
       objectReference: {fileID: 0}
+    - target: {fileID: 8115851597211747277, guid: e607294734fd9344781589f2c354bb10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7839,6 +8082,108 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 964279655589739522, guid: 21dc4cefdf7ef44d885fcdbf2b9863be, type: 3}
   m_PrefabInstance: {fileID: 2114269712}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1735691332
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1735691336}
+  - component: {fileID: 1735691335}
+  - component: {fileID: 1735691334}
+  - component: {fileID: 1735691333}
+  m_Layer: 5
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1735691333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735691332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1735691334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735691332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &1735691335
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735691332}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!224 &1735691336
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735691332}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1370264771}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &1750963401
 GameObject:
   m_ObjectHideFlags: 0
@@ -8117,8 +8462,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: 1
+  _possessingTeam: 2
+  _possessingPlayer: {fileID: 0}
   soccerPlayers: []
-  soccerBall: {fileID: 561386204}
+  soccerBall: {fileID: 885491379}
   closestTeam1Player: {fileID: 0}
   closestTeam2Player: {fileID: 0}
   team1Goal: {fileID: 1961686805}
@@ -8945,6 +9292,10 @@ PrefabInstance:
       propertyPath: teamID
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4688045721521578745, guid: e607294734fd9344781589f2c354bb10, type: 3}
+      propertyPath: playerPosition
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6241917695729920683, guid: e607294734fd9344781589f2c354bb10, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.15620318
@@ -9601,3 +9952,5 @@ SceneRoots:
   - {fileID: 1422752164}
   - {fileID: 1823406822}
   - {fileID: 7942561210440873406}
+  - {fileID: 1735691336}
+  - {fileID: 1085283377}

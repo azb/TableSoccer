@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,10 +9,32 @@ public class SoccerGame : MonoBehaviour
 
     public GameState gameState = GameState.Playing;
 
+    public enum TeamID { Team1 = 0, Team2 = 1, None = 2 };
+
+    public TeamID _possessingTeam = TeamID.None;
+
+    public static TeamID PossessingTeam
+    {
+        get
+        {
+            return Instance._possessingTeam;
+        }
+    }
+
+    public PlayerControls _possessingPlayer = null;
+
+    public static PlayerControls PossessingPlayer
+    {
+        get
+        {
+            return Instance._possessingPlayer;
+        }
+    }
+
     public static SoccerGame Instance;
 
     public PlayerControls[] soccerPlayers;
-    public Transform soccerBall;
+    public SoccerBall soccerBall;
 
     public PlayerControls closestTeam1Player;
     public PlayerControls closestTeam2Player;
@@ -31,9 +54,26 @@ public class SoccerGame : MonoBehaviour
 
     private void Update()
     {
-        float ballDistanceToCenter = Vector3.Distance(soccerBall.position, transform.position);
-        float ballDistanceToTeam1Goal = Vector3.Distance(soccerBall.position, team1Goal.position);
-        float ballDistanceToTeam2Goal = Vector3.Distance(soccerBall.position, team2Goal.position);
+        //Update which team possesses the ball
+        PhotonView PossessingPlayerPhotonView = this.soccerBall.PossessingPlayer;
+        if (PossessingPlayerPhotonView != null)
+        {
+            PlayerControls possessingPlayerControls = PossessingPlayerPhotonView.GetComponent<PlayerControls>();
+            _possessingPlayer = possessingPlayerControls;
+            if (possessingPlayerControls != null)
+            {
+                _possessingTeam = possessingPlayerControls.teamID;
+            }
+        }
+        else
+        {
+            _possessingPlayer = null;
+            _possessingTeam = TeamID.None;
+        }
+
+        float ballDistanceToCenter = Vector3.Distance(soccerBall.transform.position, transform.position);
+        float ballDistanceToTeam1Goal = Vector3.Distance(soccerBall.transform.position, team1Goal.position);
+        float ballDistanceToTeam2Goal = Vector3.Distance(soccerBall.transform.position, team2Goal.position);
 
         if (ballDistanceToCenter < ballDistanceToTeam1Goal)
         {
@@ -74,9 +114,9 @@ public class SoccerGame : MonoBehaviour
 
         for (int i = 0; i < soccerPlayers.Length; i++)
         {
-            float distance = Vector3.Distance(soccerPlayers[i].transform.position, soccerBall.position);
+            float distance = Vector3.Distance(soccerPlayers[i].transform.position, soccerBall.transform.position);
 
-            if (soccerPlayers[i].teamID == PlayerControls.TeamID.Team1)
+            if (soccerPlayers[i].teamID == TeamID.Team1)
             {
                 //if team 1
                 if (distance < closestTeam1Distance)

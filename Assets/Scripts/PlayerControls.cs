@@ -1,11 +1,11 @@
 using UnityEngine;
 using Photon.Pun;
 using System.Collections.Generic;
+using static SoccerGame;
 
 public class PlayerControls : MonoBehaviour
 {
     public TeamID teamID;
-    public enum TeamID { Team1 = 0, Team2 = 1 };
 
     public GameObject kickModel;
     public GameObject runModel1;
@@ -222,17 +222,50 @@ public class PlayerControls : MonoBehaviour
 
     bool canKick = true;
 
+    void DoKick()
+    {
+        if (!kicking && canKick)
+        {
+            kicking = true;
+            if (PhotonNetwork.OfflineMode)
+            {
+                Kick();
+            }
+            else
+            {
+                photonView.RPC("Kick", RpcTarget.All);
+            }
+        }
+        if (isHuman)
+        {
+            canKick = false;
+        }
+        else if (canKick)
+        {
+            canKick = false;
+            Invoke("ReEnableKick",1f);
+        }
+    }
+    void ReEnableKick()
+    {
+        canKick = true;
+    }
+
+    public bool isHuman = true;
     // Update is called once per frame
     void Update()
     {
-        bool isHuman = true;
-
+        isHuman = true;
         if (SoccerGame.Instance.closestTeam1Player != this && this.teamID == TeamID.Team1)
             isHuman = false;
         if (SoccerGame.Instance.closestTeam2Player != this && this.teamID == TeamID.Team2)
             isHuman = false;
         if (photonView.OwnerActorNr != (int)this.teamID)
             isHuman = false;
+        if (SoccerGame.GetState() != SoccerGame.GameState.Playing)
+        {
+            isHuman = false;
+        }
 
         if (!kicking)
         {
@@ -259,6 +292,8 @@ public class PlayerControls : MonoBehaviour
                 }
             }
 
+            Debug.Log("returning because not my photon view");
+
             return;
         }
 
@@ -267,19 +302,13 @@ public class PlayerControls : MonoBehaviour
         float lookX = 0;
         float lookY = 0;
 
-        if (isHuman && SoccerGame.Instance.gameState == SoccerGame.GameState.Playing)
+        if (isHuman)
         {
             //Human player controls
 
             if (PlayerControls.KickButtonPressed)
             {
-                if (!kicking && canKick)
-                {
-                    canKick = false;
-                    kicking = true;
-                    photonView.RPC("Kick", RpcTarget.All);
-                }
-                canKick = false;
+                DoKick();
             }
             else
             {
@@ -333,23 +362,22 @@ public class PlayerControls : MonoBehaviour
 
 
 #if UNITY_ANDROID && META_QUEST //Meta Quest Controls
-        
-        if (UnityEngine.XR.XRSettings.isDeviceActive)
-        {
-            // Check for joystick movement on the left controller
-            Vector2 leftJoystick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.LTouch);
 
-            // Check for joystick movement on the right controller
-            Vector2 rightJoystick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
+            if (UnityEngine.XR.XRSettings.isDeviceActive)
+            {
+                // Check for joystick movement on the left controller
+                Vector2 leftJoystick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.LTouch);
 
-            moveX = leftJoystick.x;
-            moveY = leftJoystick.y;
+                // Check for joystick movement on the right controller
+                Vector2 rightJoystick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
 
-            lookY = -rightJoystick.x;
-            lookX = -rightJoystick.y;
-        }    
+                moveX = leftJoystick.x;
+                moveY = leftJoystick.y;
+
+                lookY = -rightJoystick.x;
+                lookX = -rightJoystick.y;
+            }
 #endif
-            Debug.Log("distance from start = " + Vector3.Distance(transform.position, startPos));
         }
         else
         {
@@ -368,54 +396,181 @@ public class PlayerControls : MonoBehaviour
                 }
             }
 
+            float targetX = startPos.x;
             float targetZ = startPos.z;
 
-            if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
+            if (SoccerGame.Instance == null)
+            {
+                Debug.Log("Returning because SoccerGame is null");
+                return;
+            }
+            if (SoccerGame.Instance.soccerBall == null)
+            {
+                Debug.Log("Returning because soccerball is null");
+                return;
+            }
+
+            if (SoccerGame.PossessingPlayer == this)
+            {
+                //If soccer ball is on team 1's side and this player is on team 1 and a defender
+                if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
+                    && this.teamID == TeamID.Team1
+                    && this.playerPosition == PlayerPosition.Defense)
+                {
+                    float centerZ = SoccerGame.Instance.transform.position.z;
+                    targetZ = centerZ;
+                    if (Mathf.Abs(targetZ - centerZ) < .02f)
+                    {
+                        //kick the ball
+                        this.DoKick();
+                    }
+                }
+
+                //If soccer ball is on team 2's side and this player is on team 2 and a defender
+                if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
+                    && this.teamID == TeamID.Team2
+                    && this.playerPosition == PlayerPosition.Defense)
+                {
+                    Debug.Log("A player 2 defensive player has the ball");
+
+                    float centerZ = SoccerGame.Instance.transform.position.z;
+                    targetZ = centerZ;
+                    if (Mathf.Abs(targetZ - centerZ) < .02f)
+                    {
+                        Debug.Log("Should be kicking the ball");
+                        //kick the ball
+                        this.DoKick();
+                    }
+                    else
+                    {
+                        Debug.Log("Should be running to the center");
+                    }
+                }
+
+                //If this player is on team 1 and an attacker
+                if (this.teamID == TeamID.Team1
+                    && this.playerPosition == PlayerPosition.Offense)
+                {
+                    Debug.Log("A player 1 attacking player has the ball, should be running to team1Goal");
+
+                    targetX = SoccerGame.Instance.team2Goal.position.x;
+                    targetZ = SoccerGame.Instance.team2Goal.position.z;
+
+                    if (Vector3.Distance(transform.position, new Vector3(targetX, transform.position.y, targetZ)) < .25f)
+                    {
+                        Debug.Log("In range so should be kicking!");
+                        DoKick();
+                    }
+                }
+
+                //If this player is on team 2 and an attacker
+                if (this.teamID == TeamID.Team2
+                    && this.playerPosition == PlayerPosition.Offense)
+                {
+                    Debug.Log("A player 2 attacking player has the ball, should be running to team2Goal");
+
+                    targetX = SoccerGame.Instance.team1Goal.position.x;
+                    targetZ = SoccerGame.Instance.team1Goal.position.z;
+
+                    if (Vector3.Distance(transform.position, new Vector3(targetX, transform.position.y, targetZ)) < .25f)
+                    {
+                        Debug.Log("In range so should be kicking!");
+                        DoKick();
+                    }
+                }
+            }
+            else
+            {
+                //If soccer ball is on team 1's side and this player is on team 1 and a defender
+                if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
+                    && this.teamID == TeamID.Team1
+                    && this.playerPosition == PlayerPosition.Defense)
+                {
+                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                }
+
+                //If soccer ball is on team 2's side and this player is on team 2 and a defender
+                if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
+                    && this.teamID == TeamID.Team2
+                    && this.playerPosition == PlayerPosition.Defense)
+                {
+                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                }
+
+                //If soccer ball is on team 2's side or midfield and this player is on team 1 and an attacker
+                if ((SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
+                    || SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Midfield)
+                    && this.teamID == TeamID.Team1
+                    && this.playerPosition == PlayerPosition.Offense)
+                {
+                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                }
+
+                //If soccer ball is on team 1's side or midfield and this player is on team 2 and an attacker
+                if ((SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
+                    || SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Midfield)
+                    && this.teamID == TeamID.Team2
+                    && this.playerPosition == PlayerPosition.Offense)
+                {
+                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                }
+            }
+
+            if (SoccerGame.GetState() == SoccerGame.GameState.Playing && !isHuman && this.playerPosition != PlayerPosition.Goalie)
+            {
+                //targetZ += zoffset;
+            }
+
+            if (SoccerGame.Instance.closestTeam1Player == this
                 && this.teamID == TeamID.Team1
-                && this.playerPosition == PlayerPosition.Defense)
+                && SoccerGame.PossessingPlayer != this)
             {
-                targetZ = SoccerGame.Instance.soccerBall.position.z + zoffset;
+                targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
             }
 
-            if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
+            if (SoccerGame.Instance.closestTeam2Player == this
                 && this.teamID == TeamID.Team2
-                && this.playerPosition == PlayerPosition.Defense)
+                && SoccerGame.PossessingPlayer != this)
             {
-                targetZ = SoccerGame.Instance.soccerBall.position.z + zoffset;
+                targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
             }
 
-            if ((SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
-                || SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Midfield)
-                && this.teamID == TeamID.Team1
-                && this.playerPosition == PlayerPosition.Offense)
+            if (SoccerGame.GetState() == SoccerGame.GameState.Goal)
             {
-                targetZ = SoccerGame.Instance.soccerBall.position.z + zoffset;
+                targetX = startPos.x;
+                targetZ = startPos.z;
             }
 
-            if ((SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
-                || SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Midfield)
-                && this.teamID == TeamID.Team2
-                && this.playerPosition == PlayerPosition.Offense)
+            float distanceFromTargetX = Mathf.Abs(transform.position.x - targetX);
+            if (distanceFromTargetX > .01f && !isHuman)
             {
-                targetZ = SoccerGame.Instance.soccerBall.position.z + zoffset;
+                if (transform.position.x > targetX)
+                {
+                    moveX = -1;
+                }
+
+                if (transform.position.x < targetX)
+                {
+                    moveX = 1;
+                }
             }
 
             float distanceFromTargetZ = Mathf.Abs(transform.position.z - targetZ);
-            if (distanceFromTargetZ > .01f)
+            if (distanceFromTargetZ > .01f && !isHuman)
+            {
+                if (transform.position.z > targetZ)
                 {
-                    if (transform.position.z > targetZ)
-                    {
-                        moveY = -1;
-                    }
-
-                    if (transform.position.z < targetZ)
-                    {
-                        moveY = 1;
-                    }
+                    moveY = -1;
                 }
-            
-        }
 
+                if (transform.position.z < targetZ)
+                {
+                    moveY = 1;
+                }
+            }
+        }
 
         if (Mathf.Abs(moveX) + Mathf.Abs(moveY) > .2f)
         {

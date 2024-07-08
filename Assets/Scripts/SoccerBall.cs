@@ -61,7 +61,6 @@ public class SoccerBall : MonoBehaviour
         Debug.Log("SetPossessingPlayer to "+ PossessingPlayer.ViewID);
     }
 
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
