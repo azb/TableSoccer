@@ -425,123 +425,126 @@ public class PlayerControls : MonoBehaviour
                 return;
             }
 
-            if (SoccerGame.PossessingPlayer == this)
+            if (SoccerGame.GetState() == GameState.Playing)
             {
-                //If soccer ball is on team 1's side and this player is on team 1 and a defender
-                if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
-                    && this.teamID == TeamID.Team1
-                    && this.playerPosition == PlayerPosition.Defense)
+                if (SoccerGame.PossessingPlayer == this)
                 {
-                    float centerZ = SoccerGame.Instance.transform.position.z;
-                    targetZ = centerZ;
-                    if (Mathf.Abs(targetZ - centerZ) < .02f)
+                    //If soccer ball is on team 1's side and this player is on team 1 and a defender
+                    if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
+                        && this.teamID == TeamID.Team1
+                        && this.playerPosition == PlayerPosition.Defense)
                     {
-                        //kick the ball
-                        if (possessionTime > AIKickDelay)
+                        float centerZ = SoccerGame.Instance.transform.position.z;
+                        targetZ = centerZ;
+                        if (Mathf.Abs(targetZ - centerZ) < .02f)
                         {
-                            this.DoKick();
+                            //kick the ball
+                            if (possessionTime > AIKickDelay)
+                            {
+                                this.DoKick();
+                            }
+                        }
+                    }
+
+                    //If soccer ball is on team 2's side and this player is on team 2 and a defender
+                    if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
+                        && this.teamID == TeamID.Team2
+                        && this.playerPosition == PlayerPosition.Defense)
+                    {
+                        Debug.Log("A player 2 defensive player has the ball");
+
+                        float centerZ = SoccerGame.Instance.transform.position.z;
+                        targetZ = centerZ;
+                        if (Mathf.Abs(targetZ - centerZ) < .02f)
+                        {
+                            Debug.Log("Should be kicking the ball");
+                            //kick the ball
+                            if (possessionTime > AIKickDelay)
+                            {
+                                this.DoKick();
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("Should be running to the center");
+                        }
+                    }
+
+                    //If this player is on team 1 and an attacker
+                    if (this.teamID == TeamID.Team1
+                        && this.playerPosition == PlayerPosition.Offense)
+                    {
+                        Debug.Log("A player 1 attacking player has the ball, should be running to team1Goal");
+
+                        targetX = SoccerGame.Instance.team2Goal.position.x;
+                        targetZ = SoccerGame.Instance.team2Goal.position.z;
+
+                        if (Vector3.Distance(transform.position, new Vector3(targetX, transform.position.y, targetZ)) < .25f)
+                        {
+                            Debug.Log("In range so should be kicking!");
+                            if (possessionTime > AIKickDelay)
+                            {
+                                DoKick();
+                            }
+                        }
+                    }
+
+                    //If this player is on team 2 and an attacker
+                    if (this.teamID == TeamID.Team2
+                        && this.playerPosition == PlayerPosition.Offense)
+                    {
+                        Debug.Log("A player 2 attacking player has the ball, should be running to team2Goal");
+
+                        targetX = SoccerGame.Instance.team1Goal.position.x;
+                        targetZ = SoccerGame.Instance.team1Goal.position.z;
+
+                        if (Vector3.Distance(transform.position, new Vector3(targetX, transform.position.y, targetZ)) < .25f)
+                        {
+                            Debug.Log("In range so should be kicking!");
+                            if (possessionTime > AIKickDelay)
+                            {
+                                DoKick();
+                            }
                         }
                     }
                 }
-
-                //If soccer ball is on team 2's side and this player is on team 2 and a defender
-                if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
-                    && this.teamID == TeamID.Team2
-                    && this.playerPosition == PlayerPosition.Defense)
+                else //If this player doesn't possess the ball
                 {
-                    Debug.Log("A player 2 defensive player has the ball");
-
-                    float centerZ = SoccerGame.Instance.transform.position.z;
-                    targetZ = centerZ;
-                    if (Mathf.Abs(targetZ - centerZ) < .02f)
+                    //If soccer ball is on team 1's side and this player is on team 1 and a defender
+                    if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
+                        && this.teamID == TeamID.Team1
+                        && this.playerPosition == PlayerPosition.Defense)
                     {
-                        Debug.Log("Should be kicking the ball");
-                        //kick the ball
-                        if (possessionTime > AIKickDelay)
-                        {
-                            this.DoKick();
-                        }
+                        targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
                     }
-                    else
+
+                    //If soccer ball is on team 2's side and this player is on team 2 and a defender
+                    if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
+                        && this.teamID == TeamID.Team2
+                        && this.playerPosition == PlayerPosition.Defense)
                     {
-                        Debug.Log("Should be running to the center");
+                        targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
                     }
-                }
 
-                //If this player is on team 1 and an attacker
-                if (this.teamID == TeamID.Team1
-                    && this.playerPosition == PlayerPosition.Offense)
-                {
-                    Debug.Log("A player 1 attacking player has the ball, should be running to team1Goal");
-
-                    targetX = SoccerGame.Instance.team2Goal.position.x;
-                    targetZ = SoccerGame.Instance.team2Goal.position.z;
-
-                    if (Vector3.Distance(transform.position, new Vector3(targetX, transform.position.y, targetZ)) < .25f)
+                    //If soccer ball is on team 2's side or midfield and this player is on team 1 and an attacker
+                    if ((SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
+                        || SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Midfield)
+                        && this.teamID == TeamID.Team1
+                        && this.playerPosition == PlayerPosition.Offense)
                     {
-                        Debug.Log("In range so should be kicking!");
-                        if (possessionTime > AIKickDelay)
-                        {
-                            DoKick();
-                        }
+                        targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
                     }
-                }
 
-                //If this player is on team 2 and an attacker
-                if (this.teamID == TeamID.Team2
-                    && this.playerPosition == PlayerPosition.Offense)
-                {
-                    Debug.Log("A player 2 attacking player has the ball, should be running to team2Goal");
-
-                    targetX = SoccerGame.Instance.team1Goal.position.x;
-                    targetZ = SoccerGame.Instance.team1Goal.position.z;
-
-                    if (Vector3.Distance(transform.position, new Vector3(targetX, transform.position.y, targetZ)) < .25f)
+                    //If soccer ball is on team 1's side or midfield and this player is on team 2 and an attacker
+                    if ((SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
+                        || SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Midfield)
+                        && this.teamID == TeamID.Team2
+                        && this.playerPosition == PlayerPosition.Offense)
                     {
-                        Debug.Log("In range so should be kicking!");
-                        if (possessionTime > AIKickDelay)
-                        {
-                            DoKick();
-                        }
+                        targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
                     }
-                }
-            }
-            else //If this player doesn't possess the ball
-            {
-                //If soccer ball is on team 1's side and this player is on team 1 and a defender
-                if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
-                    && this.teamID == TeamID.Team1
-                    && this.playerPosition == PlayerPosition.Defense)
-                {
-                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
-                }
 
-                //If soccer ball is on team 2's side and this player is on team 2 and a defender
-                if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
-                    && this.teamID == TeamID.Team2
-                    && this.playerPosition == PlayerPosition.Defense)
-                {
-                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
                 }
-
-                //If soccer ball is on team 2's side or midfield and this player is on team 1 and an attacker
-                if ((SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team2Side
-                    || SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Midfield)
-                    && this.teamID == TeamID.Team1
-                    && this.playerPosition == PlayerPosition.Offense)
-                {
-                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
-                }
-
-                //If soccer ball is on team 1's side or midfield and this player is on team 2 and an attacker
-                if ((SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
-                    || SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Midfield)
-                    && this.teamID == TeamID.Team2
-                    && this.playerPosition == PlayerPosition.Offense)
-                {
-                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
-                }
-
             }
 
             if (SoccerGame.GetState() == SoccerGame.GameState.Playing && !isHuman && this.playerPosition != PlayerPosition.Goalie)
