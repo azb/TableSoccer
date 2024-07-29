@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class SoccerBall : MonoBehaviour
 {
+    public SoccerGame.TeamID teamThatKickedTheBallOutOfBounds = SoccerGame.TeamID.None;
+
     public PhotonView LastPossessingPlayer;
     public PhotonView _possessingPlayer;
     public PhotonView PossessingPlayer //Which player currently possesses control over the ball
@@ -58,7 +60,7 @@ public class SoccerBall : MonoBehaviour
     [PunRPC]
     void KickButtonPressedRPC()
     {
-        if (PossessingPlayer!=null)
+        if (PossessingPlayer != null)
         {
             Debug.Log("KickButtonPressedRPC");
             //Kick the ball
@@ -72,7 +74,7 @@ public class SoccerBall : MonoBehaviour
     void SetPossessingPlayer(int possessingPlayerViewID)
     {
         PossessingPlayer = PhotonView.Find(possessingPlayerViewID);
-        Debug.Log("SetPossessingPlayer to "+ PossessingPlayer.ViewID);
+        Debug.Log("SetPossessingPlayer to " + PossessingPlayer.ViewID);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -126,6 +128,14 @@ public class SoccerBall : MonoBehaviour
         {
             this.AudioSource.PlayOneShot(this.OutOfBoundsSoundEffect);
             SoccerGame.SetState(SoccerGame.GameState.BallOutOfBounds);
+            if (LastPossessingPlayer != null)
+            {
+                PlayerControls LastPossessingPlayerPC = LastPossessingPlayer.GetComponent<PlayerControls>();
+                if (LastPossessingPlayerPC != null)
+                {
+                    teamThatKickedTheBallOutOfBounds = LastPossessingPlayer.GetComponent<PlayerControls>().teamID;
+                }
+            }
         }
     }
 

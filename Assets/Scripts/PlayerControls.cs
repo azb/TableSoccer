@@ -552,20 +552,23 @@ public class PlayerControls : MonoBehaviour
                 //targetZ += zoffset;
             }
 
-            if (SoccerGame.Instance.closestTeam1Player == this
-                && this.teamID == TeamID.Team1
-                && SoccerGame.PossessingPlayer != this)
+            if (SoccerGame.GetState() == SoccerGame.GameState.Playing)
             {
-                targetX = SoccerGame.Instance.soccerBall.transform.position.x;
-                targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
-            }
+                if (SoccerGame.Instance.closestTeam1Player == this
+                    && this.teamID == TeamID.Team1
+                    && SoccerGame.PossessingPlayer != this)
+                {
+                    targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                }
 
-            if (SoccerGame.Instance.closestTeam2Player == this
-                && this.teamID == TeamID.Team2
-                && SoccerGame.PossessingPlayer != this)
-            {
-                targetX = SoccerGame.Instance.soccerBall.transform.position.x;
-                targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                if (SoccerGame.Instance.closestTeam2Player == this
+                    && this.teamID == TeamID.Team2
+                    && SoccerGame.PossessingPlayer != this)
+                {
+                    targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                }
             }
 
             if (SoccerGame.GetState() == SoccerGame.GameState.Goal)
@@ -586,22 +589,40 @@ public class PlayerControls : MonoBehaviour
 
                     if (LastPossessingPlayer != null)
                     {
-                        if (LastPossessingPlayer.teamID != teamID) //if the other team kicked the ball out of bounds
+                        if (SoccerGame.Instance.soccerBall.teamThatKickedTheBallOutOfBounds != teamID) //if the other team kicked the ball out of bounds
                         {
                             if (teamID == TeamID.Team1)
                             {
                                 if (SoccerGame.Instance.closestTeam1Player == this) //if this is the closest player
                                 {
-                                    targetX = SoccerGame.Instance.soccerBall.transform.position.x;
-                                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                                    //if not possessing the ball, go get it
+                                    if (SoccerGame.Instance.soccerBall.PossessingPlayer != this.photonView)
+                                    {
+                                        targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                                        targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                                    }
+                                    else
+                                    {
+                                        //once possessing the ball, go to the nearest sideline kick position
+
+                                    }
                                 }
                             }
                             else //if on team 2
                             {
                                 if (SoccerGame.Instance.closestTeam2Player == this) //if this is the closest player
                                 {
-                                    targetX = SoccerGame.Instance.soccerBall.transform.position.x;
-                                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                                    //if not possessing the ball, go get it
+                                    if (SoccerGame.Instance.soccerBall.PossessingPlayer != this.photonView)
+                                    {
+                                        targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                                        targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                                    }
+                                    else
+                                    {
+                                        //once possessing the ball, go to the nearest sideline kick position
+                                        
+                                    }
                                 }
                             }
                         }
