@@ -10,6 +10,7 @@ TagManager:
   - Bleachers
   - MetalPole
   - SoccerBall
+  - OutOfBounds
   layers:
   - Default
   - TransparentFX

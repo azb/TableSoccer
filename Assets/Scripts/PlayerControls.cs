@@ -248,7 +248,7 @@ public class PlayerControls : MonoBehaviour
         else if (canKick)
         {
             canKick = false;
-            Invoke("ReEnableKick",1f);
+            Invoke("ReEnableKick", 1f);
         }
     }
     void ReEnableKick()
@@ -506,7 +506,7 @@ public class PlayerControls : MonoBehaviour
                     }
                 }
             }
-            else
+            else //If this player doesn't possess the ball
             {
                 //If soccer ball is on team 1's side and this player is on team 1 and a defender
                 if (SoccerGame.Instance.soccerBallPosition == SoccerGame.SoccerBallPosition.Team1Side
@@ -541,6 +541,7 @@ public class PlayerControls : MonoBehaviour
                 {
                     targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
                 }
+
             }
 
             if (SoccerGame.GetState() == SoccerGame.GameState.Playing && !isHuman && this.playerPosition != PlayerPosition.Goalie)
@@ -568,6 +569,41 @@ public class PlayerControls : MonoBehaviour
             {
                 targetX = startPos.x;
                 targetZ = startPos.z;
+            }
+
+            if (SoccerGame.GetState() == SoccerGame.GameState.BallOutOfBounds)
+            {
+                targetX = startPos.x;
+                targetZ = startPos.z;
+
+                PhotonView LastPossessingPlayerPhotonView = SoccerGame.Instance.soccerBall.LastPossessingPlayer;
+                if (LastPossessingPlayerPhotonView != null)
+                {
+                    PlayerControls LastPossessingPlayer = LastPossessingPlayerPhotonView.GetComponent<PlayerControls>();
+
+                    if (LastPossessingPlayer != null)
+                    {
+                        if (LastPossessingPlayer.teamID != teamID) //if the other team kicked the ball out of bounds
+                        {
+                            if (teamID == TeamID.Team1)
+                            {
+                                if (SoccerGame.Instance.closestTeam1Player == this) //if this is the closest player
+                                {
+                                    targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                                }
+                            }
+                            else //if on team 2
+                            {
+                                if (SoccerGame.Instance.closestTeam2Player == this) //if this is the closest player
+                                {
+                                    targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             float distanceFromTargetX = Mathf.Abs(transform.position.x - targetX);

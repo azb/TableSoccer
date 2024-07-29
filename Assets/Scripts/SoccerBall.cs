@@ -3,7 +3,20 @@ using UnityEngine;
 
 public class SoccerBall : MonoBehaviour
 {
-    public PhotonView PossessingPlayer; //Which player currently possesses control over the ball
+    public PhotonView LastPossessingPlayer;
+    public PhotonView _possessingPlayer;
+    public PhotonView PossessingPlayer //Which player currently possesses control over the ball
+    {
+        get
+        {
+            return _possessingPlayer;
+        }
+        set
+        {
+            LastPossessingPlayer = _possessingPlayer;
+            _possessingPlayer = value;
+        }
+    }
     Rigidbody rb;
     PhotonView photonView;
     ResetOnOutOfBounds resetter;
@@ -11,6 +24,7 @@ public class SoccerBall : MonoBehaviour
     public AudioClip KickBallSoundEffect;
     public AudioClip BallHitGoalSoundEffect;
     public AudioClip BallHitPlasticWallSoundEffect;
+    public AudioClip OutOfBoundsSoundEffect;
     public AudioSource AudioSource;
 
     public AudioClip AnnouncerGoal;
@@ -107,6 +121,12 @@ public class SoccerBall : MonoBehaviour
                 SoccerGame.Instance.gameState = SoccerGame.GameState.Goal;
             }
         }
+
+        if (collision.gameObject.tag == "OutOfBounds")
+        {
+            this.AudioSource.PlayOneShot(this.OutOfBoundsSoundEffect);
+            SoccerGame.SetState(SoccerGame.GameState.BallOutOfBounds);
+        }
     }
 
     void PlayAnnouncerGoalSound()
@@ -132,5 +152,4 @@ public class SoccerBall : MonoBehaviour
     {
         SoccerGame.Instance.gameState = SoccerGame.GameState.Playing;
     }
-
 }
