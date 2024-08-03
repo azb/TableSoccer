@@ -124,7 +124,7 @@ public class SoccerBall : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.tag == "OutOfBounds")
+        if (collision.gameObject.tag == "OutOfBounds" && SoccerGame.GetState() == SoccerGame.GameState.Playing)
         {
             this.AudioSource.PlayOneShot(this.OutOfBoundsSoundEffect);
             SoccerGame.SetState(SoccerGame.GameState.BallOutOfBounds);

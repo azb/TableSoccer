@@ -604,7 +604,12 @@ public class PlayerControls : MonoBehaviour
                                     else
                                     {
                                         //once possessing the ball, go to the nearest sideline kick position
-
+                                        Transform nearestKickPosition = SoccerGame.NearestSidelineKickPosition(transform.position);
+                                        if (nearestKickPosition != null)
+                                        {
+                                            targetX = nearestKickPosition.position.x;
+                                            targetZ = nearestKickPosition.position.z;
+                                        }
                                     }
                                 }
                             }
@@ -621,7 +626,12 @@ public class PlayerControls : MonoBehaviour
                                     else
                                     {
                                         //once possessing the ball, go to the nearest sideline kick position
-                                        
+                                        Transform nearestKickPosition = SoccerGame.NearestSidelineKickPosition(transform.position);
+                                        if (nearestKickPosition != null)
+                                        {
+                                            targetX = nearestKickPosition.position.x;
+                                            targetZ = nearestKickPosition.position.z;
+                                        }
                                     }
                                 }
                             }
@@ -630,15 +640,17 @@ public class PlayerControls : MonoBehaviour
                 }
             }
 
+            float stopDistance = .01f; //.05f;
+
             float distanceFromTargetX = Mathf.Abs(transform.position.x - targetX);
             if (distanceFromTargetX > .01f && !isHuman)
             {
-                if (transform.position.x > targetX)
+                if (transform.position.x > targetX + stopDistance)
                 {
                     moveX = -1;
                 }
 
-                if (transform.position.x < targetX)
+                if (transform.position.x < targetX - stopDistance)
                 {
                     moveX = 1;
                 }
@@ -647,22 +659,30 @@ public class PlayerControls : MonoBehaviour
             float distanceFromTargetZ = Mathf.Abs(transform.position.z - targetZ);
             if (distanceFromTargetZ > .01f && !isHuman)
             {
-                if (transform.position.z > targetZ)
+                if (transform.position.z > targetZ + stopDistance)
                 {
                     moveY = -1;
                 }
 
-                if (transform.position.z < targetZ)
+                if (transform.position.z < targetZ - stopDistance)
                 {
                     moveY = 1;
                 }
             }
-        }
 
-        if (!isHuman)
-        {
             moveX *= AISpeedScalar;
             moveY *= AISpeedScalar;
+
+            float distanceX = Mathf.Abs(transform.position.x-targetX);
+            float distanceZ = Mathf.Abs(transform.position.z-targetZ);
+
+            //Vector3.Distance(
+            //    transform.position,
+            //    new Vector3(targetX, transform.position.y, targetZ)
+            //);
+
+            moveX *= Mathf.Min(1, distanceX / .05f);
+            moveY *= Mathf.Min(1, distanceZ / .05f);
         }
 
         if (Mathf.Abs(moveX) + Mathf.Abs(moveY) > .2f)
@@ -694,7 +714,6 @@ public class PlayerControls : MonoBehaviour
 
             // Rotate the vector using quaternion multiplication
             Vector3 rotatedVector = rotation * moveVector;
-
 
             transform.position += rotatedVector;
 
