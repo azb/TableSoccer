@@ -3,7 +3,22 @@ using UnityEngine;
 
 public class SoccerBall : MonoBehaviour
 {
-    public PhotonView PossessingPlayer; //Which player currently possesses control over the ball
+    public SoccerGame.TeamID teamThatKickedTheBallOutOfBounds = SoccerGame.TeamID.None;
+
+    public PhotonView LastPossessingPlayer;
+    public PhotonView _possessingPlayer;
+    public PhotonView PossessingPlayer //Which player currently possesses control over the ball
+    {
+        get
+        {
+            return _possessingPlayer;
+        }
+        set
+        {
+            LastPossessingPlayer = _possessingPlayer;
+            _possessingPlayer = value;
+        }
+    }
     Rigidbody rb;
     PhotonView photonView;
     ResetOnOutOfBounds resetter;
@@ -11,6 +26,7 @@ public class SoccerBall : MonoBehaviour
     public AudioClip KickBallSoundEffect;
     public AudioClip BallHitGoalSoundEffect;
     public AudioClip BallHitPlasticWallSoundEffect;
+    public AudioClip OutOfBoundsSoundEffect;
     public AudioSource AudioSource;
 
     public AudioClip AnnouncerGoal;
@@ -44,7 +60,7 @@ public class SoccerBall : MonoBehaviour
     [PunRPC]
     void KickButtonPressedRPC()
     {
-        if (PossessingPlayer!=null)
+        if (PossessingPlayer != null)
         {
             Debug.Log("KickButtonPressedRPC");
             //Kick the ball
@@ -58,7 +74,7 @@ public class SoccerBall : MonoBehaviour
     void SetPossessingPlayer(int possessingPlayerViewID)
     {
         PossessingPlayer = PhotonView.Find(possessingPlayerViewID);
-        Debug.Log("SetPossessingPlayer to "+ PossessingPlayer.ViewID);
+        Debug.Log("SetPossessingPlayer to " + PossessingPlayer.ViewID);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -107,6 +123,20 @@ public class SoccerBall : MonoBehaviour
                 SoccerGame.Instance.gameState = SoccerGame.GameState.Goal;
             }
         }
+
+        if (collision.gameObject.tag == "OutOfBounds" && SoccerGame.GetState() == SoccerGame.GameState.Playing)
+        {
+            this.AudioSource.PlayOneShot(this.OutOfBoundsSoundEffect);
+            SoccerGame.SetState(SoccerGame.GameState.BallOutOfBounds);
+            if (LastPossessingPlayer != null)
+            {
+                PlayerControls LastPossessingPlayerPC = LastPossessingPlayer.GetComponent<PlayerControls>();
+                if (LastPossessingPlayerPC != null)
+                {
+                    teamThatKickedTheBallOutOfBounds = LastPossessingPlayer.GetComponent<PlayerControls>().teamID;
+                }
+            }
+        }
     }
 
     void PlayAnnouncerGoalSound()
@@ -132,5 +162,4 @@ public class SoccerBall : MonoBehaviour
     {
         SoccerGame.Instance.gameState = SoccerGame.GameState.Playing;
     }
-
 }

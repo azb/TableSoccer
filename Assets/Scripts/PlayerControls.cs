@@ -251,7 +251,7 @@ public class PlayerControls : MonoBehaviour
         else if (canKick)
         {
             canKick = false;
-            Invoke("ReEnableKick",1f);
+            Invoke("ReEnableKick", 1f);
         }
     }
     void ReEnableKick()
@@ -428,57 +428,63 @@ public class PlayerControls : MonoBehaviour
                 return;
             }
 
-            if (SoccerGame.PossessingPlayer == this) //If this AI player possesses the ball
+            if (SoccerGame.GetState() == GameState.Playing)
             {
-                switch (this.playerPosition)
+                if (SoccerGame.PossessingPlayer == this) //If this AI player possesses the ball
                 {
-                    case PlayerPosition.Defense:
-                        AIPlayerDefender.UpdateWithBall(this);
-                        break;
-                    case PlayerPosition.Goalie:
-                        AIPlayerGoalie.UpdateWithBall(this);
-                        break;
-                    case PlayerPosition.Offense:
-                        AIPlayerAttacker.UpdateWithBall(this);
-                        break;
+                    switch (this.playerPosition)
+                    {
+                        case PlayerPosition.Defense:
+                            AIPlayerDefender.UpdateWithBall(this);
+                            break;
+                        case PlayerPosition.Goalie:
+                            AIPlayerGoalie.UpdateWithBall(this);
+                            break;
+                        case PlayerPosition.Offense:
+                            AIPlayerAttacker.UpdateWithBall(this);
+                            break;
+                    }
                 }
-            }
-            else //If this AI player doesn't have the ball
-            {
-                switch(this.playerPosition)
+                else //If this AI player doesn't have the ball
                 {
-                    case PlayerPosition.Defense:
-                        AIPlayerDefender.UpdateWithoutBall(this);
-                        break;
-                    case PlayerPosition.Goalie:
-                        AIPlayerGoalie.UpdateWithoutBall(this);
-                        break;
-                    case PlayerPosition.Offense:
-                        AIPlayerAttacker.UpdateWithoutBall(this);
-                        break;
+                    switch (this.playerPosition)
+                    {
+                        case PlayerPosition.Defense:
+                            AIPlayerDefender.UpdateWithoutBall(this);
+                            break;
+                        case PlayerPosition.Goalie:
+                            AIPlayerGoalie.UpdateWithoutBall(this);
+                            break;
+                        case PlayerPosition.Offense:
+                            AIPlayerAttacker.UpdateWithoutBall(this);
+                            break;
+                    }
                 }
             }
 
-            if (SoccerGame.GetState() == SoccerGame.GameState.Playing 
+            if (SoccerGame.GetState() == SoccerGame.GameState.Playing
                 && !isHuman && this.playerPosition != PlayerPosition.Goalie)
             {
                 //targetZ += zoffset;
             }
 
-            if (SoccerGame.Instance.closestTeam1Player == this
-                && this.teamID == TeamID.Team1
-                && SoccerGame.PossessingPlayer != this)
+            if (SoccerGame.GetState() == SoccerGame.GameState.Playing)
             {
-                targetX = SoccerGame.Instance.soccerBall.transform.position.x;
-                targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
-            }
+                if (SoccerGame.Instance.closestTeam1Player == this
+                    && this.teamID == TeamID.Team1
+                    && SoccerGame.PossessingPlayer != this)
+                {
+                    targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                }
 
-            if (SoccerGame.Instance.closestTeam2Player == this
-                && this.teamID == TeamID.Team2
-                && SoccerGame.PossessingPlayer != this)
-            {
-                targetX = SoccerGame.Instance.soccerBall.transform.position.x;
-                targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                if (SoccerGame.Instance.closestTeam2Player == this
+                    && this.teamID == TeamID.Team2
+                    && SoccerGame.PossessingPlayer != this)
+                {
+                    targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                    targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                }
             }
 
             if (SoccerGame.GetState() == SoccerGame.GameState.Goal)
@@ -487,15 +493,80 @@ public class PlayerControls : MonoBehaviour
                 targetZ = startPos.z;
             }
 
+            if (SoccerGame.GetState() == SoccerGame.GameState.BallOutOfBounds)
+            {
+                targetX = startPos.x;
+                targetZ = startPos.z;
+
+                PhotonView LastPossessingPlayerPhotonView = SoccerGame.Instance.soccerBall.LastPossessingPlayer;
+                if (LastPossessingPlayerPhotonView != null)
+                {
+                    PlayerControls LastPossessingPlayer = LastPossessingPlayerPhotonView.GetComponent<PlayerControls>();
+
+                    if (LastPossessingPlayer != null)
+                    {
+                        if (SoccerGame.Instance.soccerBall.teamThatKickedTheBallOutOfBounds != teamID) //if the other team kicked the ball out of bounds
+                        {
+                            if (teamID == TeamID.Team1)
+                            {
+                                if (SoccerGame.Instance.closestTeam1Player == this) //if this is the closest player
+                                {
+                                    //if not possessing the ball, go get it
+                                    if (SoccerGame.Instance.soccerBall.PossessingPlayer != this.photonView)
+                                    {
+                                        targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                                        targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                                    }
+                                    else
+                                    {
+                                        //once possessing the ball, go to the nearest sideline kick position
+                                        Transform nearestKickPosition = SoccerGame.NearestSidelineKickPosition(transform.position);
+                                        if (nearestKickPosition != null)
+                                        {
+                                            targetX = nearestKickPosition.position.x;
+                                            targetZ = nearestKickPosition.position.z;
+                                        }
+                                    }
+                                }
+                            }
+                            else //if on team 2
+                            {
+                                if (SoccerGame.Instance.closestTeam2Player == this) //if this is the closest player
+                                {
+                                    //if not possessing the ball, go get it
+                                    if (SoccerGame.Instance.soccerBall.PossessingPlayer != this.photonView)
+                                    {
+                                        targetX = SoccerGame.Instance.soccerBall.transform.position.x;
+                                        targetZ = SoccerGame.Instance.soccerBall.transform.position.z;
+                                    }
+                                    else
+                                    {
+                                        //once possessing the ball, go to the nearest sideline kick position
+                                        Transform nearestKickPosition = SoccerGame.NearestSidelineKickPosition(transform.position);
+                                        if (nearestKickPosition != null)
+                                        {
+                                            targetX = nearestKickPosition.position.x;
+                                            targetZ = nearestKickPosition.position.z;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            float stopDistance = .01f; //.05f;
+
             float distanceFromTargetX = Mathf.Abs(transform.position.x - targetX);
             if (distanceFromTargetX > .01f && !isHuman)
             {
-                if (transform.position.x > targetX)
+                if (transform.position.x > targetX + stopDistance)
                 {
                     moveX = -1;
                 }
 
-                if (transform.position.x < targetX)
+                if (transform.position.x < targetX - stopDistance)
                 {
                     moveX = 1;
                 }
@@ -504,22 +575,30 @@ public class PlayerControls : MonoBehaviour
             float distanceFromTargetZ = Mathf.Abs(transform.position.z - targetZ);
             if (distanceFromTargetZ > .01f && !isHuman)
             {
-                if (transform.position.z > targetZ)
+                if (transform.position.z > targetZ + stopDistance)
                 {
                     moveY = -1;
                 }
 
-                if (transform.position.z < targetZ)
+                if (transform.position.z < targetZ - stopDistance)
                 {
                     moveY = 1;
                 }
             }
-        }
 
-        if (!isHuman)
-        {
             moveX *= AISpeedScalar;
             moveY *= AISpeedScalar;
+
+            float distanceX = Mathf.Abs(transform.position.x - targetX);
+            float distanceZ = Mathf.Abs(transform.position.z - targetZ);
+
+            //Vector3.Distance(
+            //    transform.position,
+            //    new Vector3(targetX, transform.position.y, targetZ)
+            //);
+
+            moveX *= Mathf.Min(1, distanceX / .05f);
+            moveY *= Mathf.Min(1, distanceZ / .05f);
         }
 
         if (Mathf.Abs(moveX) + Mathf.Abs(moveY) > .2f)
@@ -551,7 +630,6 @@ public class PlayerControls : MonoBehaviour
 
             // Rotate the vector using quaternion multiplication
             Vector3 rotatedVector = rotation * moveVector;
-
 
             transform.position += rotatedVector;
 

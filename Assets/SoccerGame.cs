@@ -45,6 +45,8 @@ public class SoccerGame : MonoBehaviour
     public enum SoccerBallPosition { Team1Side, Midfield, Team2Side }
     public SoccerBallPosition soccerBallPosition = SoccerBallPosition.Midfield;
 
+    public Transform[] SidelineKickPositions;
+
     void Start()
     {
         Instance = this;
@@ -140,5 +142,26 @@ public class SoccerGame : MonoBehaviour
         closestTeam2Player = soccerPlayers[closestTeam2Index];
 
         Invoke("UpdateClosestPlayer", .2f);
+    }
+
+    public static Transform NearestSidelineKickPosition(Vector3 position)
+    {
+        float minDistance = float.MaxValue;
+        int minIndex = -1;
+        for (int i = 0; i < Instance.SidelineKickPositions.Length; i++)
+        {
+            float distance = Vector3.Distance(
+                position,
+                Instance.SidelineKickPositions[i].position
+            );
+
+            if (distance < minDistance)
+            {
+                minIndex = i;
+                minDistance = distance;
+            }
+        }
+        
+        return Instance.SidelineKickPositions[minIndex];
     }
 }
